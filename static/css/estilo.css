@@ -268,9 +268,10 @@ div{
 #info_prod{
     margin:5px;
     padding:15px;
+    padding-top:2px;
+    margin-top:0px;
     width:470px;
     position:static;
-    background-color: royalblue;
     float:left;
 }
 
@@ -290,5 +291,68 @@ div{
 
 .elemTalla:hover, .elemColor:hover {
     border-width: 4px;
+}
+
+.elemTalla::selection, .elemColor:selection{
+    background-color: blue;
+}
+
+#info_precio{
+    float:right;
+}
+
+#info_precio label{
+    float:right;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#info_precio input{
+    background-color:#C9DBED;
+    height:50px;
+    width:190px;
+    background: -webkit-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -o-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -moz-linear-gradient(#e2e2e2,#d2d2d2);
+	background: linear-gradient(#e2e2e2,#d2d2d2);
+
+}
+
+#lateral_prod{
+    background-color:red;
+    width:100px;
+    height:440px;
+    float:left;
+}
+
+#desc_prod{
+    float:left;
+    width:1000px;
+    align-items: center;
+}
+
+#descripcion{
+    text-align: justify;
+}
+
+#list_desc {
+    margin-left: 0;
+    padding:0;
+}
+
+.n, .b{
+    list-style: none;
+    padding:0;
+    margin-left:0;
+    padding-top:4px;
+    padding-bottom: 4px;
+}
+
+.n{
+    background-color: #C9DBED;
+}
+
+.b{
+    background-color: #ffffff;
 }
 

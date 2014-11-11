@@ -14,28 +14,61 @@
                 <img src="{{ producto.foto_principal.url }}" id="img_prin" width=400 height=550>
                 <div id="info_prod">
                     <h1>{{ producto.nombre }}</h1>
-                    <h3>SKU: {{ producto.SKU }}</h3>
-                    <h3>Modelo: {{ producto.modelo }}</h3>
-                    <p>{{ producto.descripcion }}</p>
-                    <ul id="list_tallas">Tallas: <br><br>
-                        {% for talla in producto.talla.all %}
-                            <li class="elemTalla">{{ talla }}</li>
-                        {% endfor %}
-                    </ul>
-                    <ul id="list_colores">
-                        Colores:<br><br>
-                        {% for color in producto.color.all %}
-                            <li class="elemColor">{{ color }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div id="info_precio">
-                    <h2>${{ producto.precio_venta }}0</h2>
+                    <h3>{{ producto.subcategoria.categoria }}</h3>
+                    <h4>{{ producto.subcategoria.nombre }}</h4>
+                    <form method="get" action="">
+                        <ul id="list_tallas">Tallas: <br><br>
+                            {% for talla in producto.talla.all %}
+                                <li class="elemTalla"><input type="checkbox" >{{ talla }}</li></li>
+                            {% endfor %}
+                        </ul>
+
+                        <ul id="list_colores">
+                            Colores:<br><br>
+                            {% for color in producto.color.all %}
+                                <li class="elemColor">{{ color }}</li>
+                            {% endfor %}
+                        </ul>
+                    </form>
+                        <br>
+                    <h4>¿No encontraste tu talla?</h4>
+                    <br>
+                    <br>
+                    <div id="info_precio">
+                    <label>${{ producto.precio_venta }}0</label>
                     <form action="" method="post">
-                        <input type="submit" name="btnComprar" value="Comprar" id="btnComprar">
+                        <input type="submit" name="btnCarrito" value="Añadir al carrito" id="btnCarrito">
                     </form>
                 </div>
+                </div>
+                <br>
+                <div id="lateral_prod">
+
+                </div>
+
+                <div id="desc_prod">
+                    <h3>Descripción del producto</h3>
+                    <p id="descripcion">{{ producto.descripcion }}</p>
+                    <ul id="list_desc">
+                        <li class="n">SKU: {{ producto.SKU }}</li>
+                        <li class="b">Modelo: {{ producto.modelo }}</li>
+                        <li class="n">Categoría: {{ producto.subcategoria.categoria }}</li>
+                        <li class="b">Subcategoría: {{ producto.subcategoria.nombre }}</li>
+                        <li class="n">Precio: ${{ producto.precio_venta }}0 MXN</li>
+                        <li class="b">Tallas:
+                            {% for talla in producto.talla.all %}
+                               [{{ talla.talla }}]
+                            {% endfor %}</li>
+                        <li class="n">Colores disponibles:
+                            {% for color in producto.color.all %}
+                                {{ color.nombre }}
+                            {% endfor %}
+                        </li>
+                    </ul>
+                </div>
+
             {% else %}
+
 
             {% endif %}
 
