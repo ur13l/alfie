@@ -1,0 +1,294 @@
+header{
+	margin-top:0;
+	padding:0;
+	top:0;
+	left:0;
+	margin-left:0;
+	height:100px;
+	width:100%;
+	position:absolute;
+
+		background: -webkit-linear-gradient(#f0f0f0,#e2e2e2);	
+	background: -o-linear-gradient(#f0f0f0,#e2e2e2);
+	background: -moz-linear-gradient(#f0f0f0,#e2e2e2);
+	background: linear-gradient(#f0f0f0,#e2e2e2);	
+}
+
+body{
+	margin-top:8%;
+	font-family:Calibri;
+	padding-left:0;
+	padding:0;
+}
+
+.class{
+	width:100%;
+}
+
+#formulario_registro{
+	width:600px;
+	float:left;
+	padding:1em;
+	padding-left:3em;
+	margin-right:2em;
+	left:18%;
+	position: relative;
+
+	background: -webkit-linear-gradient(#f0f9f9,#f9f9f9);	
+	background: -o-linear-gradient(#f0f9f9,#f9f9f9);
+	background: -moz-linear-gradient(#f0f9f9,#f9f9f9);
+	background: linear-gradient(#f0f9f9,#f3f9f9);	
+}
+
+#formulario_registro input{
+	height:30px;
+	width:300px;
+}
+
+
+
+select{
+	height:40px;
+	width:310px;
+}
+
+#formulario_registro #btnRegistro{
+	height:50px;
+	width:430px;
+	margin-left:40px;
+}
+
+.errorlist li{
+	color:red;
+	font-size:80%;
+	padding-bottom:0;
+	margin-bottom:0;
+	border-bottom:0;
+	list-style:none;
+}
+
+.errorlist{
+	color:red;
+	padding-bottom:0;
+	padding-left:0;
+	margin-bottom:0;
+	border-bottom:0;
+	list-style:none;
+}
+
+.resum_prod{
+	
+	margin:0 auto;
+	padding-left:0;
+	border-radius:1em;
+
+}
+
+.resum_prod:hover{
+	-webkit-box-shadow:0 0 1em hsla(0, 0%, 0%, 1.0);-moz-box-shadow:0 0 1em hsla(0, 0%, 0%, 1.0);box-shadow:0 0 8px hsla(0, 0%, 0%, 1.0);
+}
+
+.img_prod{
+	padding:1em;
+	float:center;
+	margin:0 auto;
+	text-align:center;
+}
+
+.marco{
+	padding:1em;
+	border-radius:1em;
+	width:250px;
+	float:left;
+	margin:0 auto;
+}
+
+
+#logo{
+	float:left;
+	padding:10px;
+	width:10%;
+}
+
+#buscar{
+	float:left;
+	padding-top:30px;
+	padding-left:20em;
+	padding-right:8em;
+}
+
+#q{	
+	width:350px;
+	height:30px;
+}
+
+#btnBuscar{
+	height:40px;
+	width:100px;
+}
+
+
+aside{
+	float:left;
+	padding-right:18px;
+	padding-left:15px;
+	margin-right:0px;
+	background-color:#f9f9f9;
+	top:0;
+	border-radius:0 1em 1em 0;
+	left:0;
+	margin-left:-10px;;
+
+
+}
+
+.menu .menu_item{
+	text-decoration:none;
+	list-style:none;
+	margin:0px;
+	padding:9px;
+	padding-right:0;
+	margin-right:0;
+	margin-left:-10px;
+}
+
+a{
+	text-decoration:none;
+}
+
+
+/*Login*/
+#form_login{
+	top:40px;
+	margin-left:300px;
+	padding-left:40px;
+	padding-top:2px;
+	padding-bottom:20px;
+	background:#f0f9f9;
+	width:400px;
+	border-radius:1em;
+
+}
+
+.login_input{
+	height:30px;
+	width:300px;
+}
+
+#button_login{
+	height:40px;
+	width:310px;
+}
+
+.campo{
+	padding:6px;
+}
+
+
+
+h2{
+	font-style:serif;
+	font-family:"Calibri";
+}
+
+#sesion{
+
+	height:30px;
+	margin:0;
+	float:right;
+	padding:35px;
+}
+
+div#sesion:hover{
+
+	background: -webkit-linear-gradient(#e2e2e2,#d2d2d2);	
+	background: -o-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -moz-linear-gradient(#e2e2e2,#d2d2d2);
+	background: linear-gradient(#e2e2e2,#d2d2d2);
+}
+
+div{
+	margin:0;
+}
+
+.menu {
+	padding:0;
+}
+.menu_item{
+	width:100%;
+	padding:100px;
+}
+.menu_item:hover{
+	background: -webkit-linear-gradient(#f0f0f0,#d2d2d2);	
+	background: -o-linear-gradient(#f0f0f0,#d2d2d2);
+	background: -moz-linear-gradient(#f0f0f0,#d2d2d2);
+	background: linear-gradient(#f0f0f0,#d2d2d2);
+}	
+
+#under{
+	margin-left:6em;
+}
+
+#form_agregar input{
+	height:30px;
+	width:270px;
+}
+
+#form_agregar #button_buscar{
+	height:40px;
+	width:130px;
+}
+
+#contenido{
+	margin-left:190px;
+}
+
+.img_prod select{
+	height:25px;
+	width:100px;
+}
+
+
+#div_img_sec{
+    width:110px;
+    float:left;
+
+}
+
+.img_sec, #img_prin{
+    -webkit-box-shadow:0 0 1em hsla(0, 0%, 0%, 1.0);
+    -moz-box-shadow:0 0 1em hsla(0, 0%, 0%, 1.0);
+    box-shadow:0 0 8px hsla(0, 0%, 0%, 1.0);
+
+    margin-bottom:5px;
+    margin-top:5px;
+    float:left;
+}
+
+#info_prod{
+    margin:5px;
+    padding:15px;
+    width:470px;
+    position:static;
+    background-color: royalblue;
+    float:left;
+}
+
+#list_tallas, #list_color{
+    font-size:22px ;
+}
+
+.elemTalla, .elemColor{
+    font-size:16px;
+    list-style: none;
+    display: inline;
+    border-style: solid;
+    padding:7px;
+    border-width: 2px;
+    border-radius: 9px;
+}
+
+.elemTalla:hover, .elemColor:hover {
+    border-width: 4px;
+}
+

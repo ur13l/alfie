@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+
+{%block contenido%}
+	
+	<form action="" method="post" id='form_login'>
+		{%csrf_token%}
+		
+		<h2>Iniciar sesión</h2>
+
+		{%if errors %}
+		<ul class="errorlist">
+			{%for error in errors%}
+			<li>{{error}}</li>
+			{%endfor%}
+		</ul>
+		{%endif%}
+
+		<div class="campo">
+		<input type="text" name="user" id="user" class="login_input" placeholder="Usuario" value="{{us}}">
+		</div>
+		<div class="campo">
+		<input type="password" name="cont" id="cont" placeholder="Contraseña" class="login_input">
+		</div>
+		<div class="campo">
+		<input type="submit" value="Login" id="button_login">
+		</div>
+		<label><a href="/registro/">Crear una nueva cuenta</a></label>
+	</form>
+
+{%endblock%}

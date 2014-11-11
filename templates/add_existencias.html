@@ -1,0 +1,45 @@
+{%extends 'inventario.html'%}
+{%block contenido%}
+						<form action="" method="post" id="form_agregar">
+							{%csrf_token%}
+							{{form.as_table}}
+						
+						<input type="Submit" id="button_buscar" value="Buscar">
+						</form>
+						<form action="" method="get">
+						{%if productos %}
+							<ul>
+								{%for producto in productos%}
+									<div class="marco">
+										<div class="resum_prod">
+											<div class="img_prod">
+												<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
+												<label><i>{{producto.nombre}}</i></label><br>
+												<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
+												<label>Talla:</label><select id="sel_talla" name="sel_talla">
+												{%for talla in producto.talla.all%}
+													<option value="{{talla.id}}">{{talla.talla}}</option>
+												{%endfor%}
+												</select><br>
+												<label>Color:</label><select id="sel_color" name="sel_color">
+												{%for color in producto.color.all%}
+													<option value="{{color.id}}">{{color.nombre}}</option>
+												{%endfor%}
+												</select><br>
+												<label><strong>Unidades: 
+													{%for u in unid%}
+														{%if u.producto_id == producto.id%}
+															{{u.unidades}}
+														{%endif%}
+													{%endfor%}
+												</strong></label><br>
+												 <input type= "number" name="{{producto.SKU}}" size= 25 id='uni' value="0">	<input type="Submit"value="Agregar">
+											</div>
+										</div>   
+									</div>
+									{%endfor%}
+							</ul>
+						
+						{%endif%}
+						</form>
+{%endblock%}

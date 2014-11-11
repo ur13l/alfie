@@ -1,0 +1,32 @@
+{%extends 'base.html'%}
+
+{%block contenido%}
+
+
+	<div id="formulario_registro">
+		{%if errors %}
+		<ul>
+			{%for error in errors%}
+			<li>{{error}}</li>
+			{%endfor%}
+		</ul>
+		{%endif%}
+		<form action="" method="post" name="registro" class="formulario" id="formregistro">
+			{% csrf_token %}		
+				
+				<h2> Crea tu cuenta de Alfie</h2>
+				<table>
+					{{form.as_table}}
+				</table>
+				<br>
+				<input type="submit" value="Registro" name= "registro" id="btnRegistro">
+
+		</form>
+
+		{%if m%}
+			<p>{{m}}</p>
+		{%endif%}
+
+	</div>
+	
+{%endblock%}

@@ -1,0 +1,63 @@
+#contenido {
+    display: table;
+}
+
+#contenidoPrincipal {
+    display: table-cell;
+    width: 620px;
+    padding-right: 22px;
+}
+
+.blogPost div {
+    column-gap: 22px;
+    -moz-column-count: 2;   /* Firefox */
+    -moz-column-gap: 22px;
+    -webkit-column-count: 2; /* Safari & Chrome */
+    -webkit-column-gap: 22px;
+}
+
+/* Barra Lateral */
+
+aside section {
+    position: absolute;
+    margin: 22px 800px 0 22px;
+    padding: 11px 22px;
+    background: #000;
+    border-radius: 11px;
+}
+
+aside section ul {
+    margin: 0 0 0 22px;
+    list-style: none;
+}
+
+aside section ul li a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    position: static;
+    height:50px;
+    width:75px;
+}
+
+aside section ul li a:hover {
+    text-decoration: underline;
+}
+
+aside section header h3{
+    color: #fff;
+}
+
+#Centro{
+    position: fixed;
+    margin: 22px 22px 0px 220px;
+    padding: 11px 22px;
+    background: #fff;
+    border-radius: 11px;
+    height:500px;
+}
+
+body{
+    background:#154;
+    color:#000000;
+}

@@ -1,0 +1,16 @@
+{%extends 'inventario.html'%}
+
+{%block contenido%}
+					{%for producto in productos%}
+									<div class="marco">
+										<div class="resum_prod">
+											<div class="img_prod">
+												<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
+												<label><i>{{producto.nombre}}</i></label><br>
+												<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
+												 
+											</div>
+										</div>   
+									</div>
+					{%endfor%}
+{%endblock%}

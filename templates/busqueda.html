@@ -1,0 +1,24 @@
+{%extends 'base.html'%}
+
+{%block contenido%}
+	<h1>Resultado de la búsqueda</h1>
+	{%if prod%}
+	<p>{{prod|length}} producto{{prod|pluralize}} encontrado{{prod|pluralize}}. </p>
+	
+		{%for producto in prod%}
+		<div class="marco">
+			<div class="resum_prod">
+				<div class="img_prod">
+					<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
+					<label><i>{{producto.nombre}}</i></label><br>
+					<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
+					
+				</div>
+			</div>   
+		</div>
+		{%endfor%}
+{%else%}
+	<p>No {{prod}} matched your search criteria.</p>
+{%endif%}
+
+{%endblock%}

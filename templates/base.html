@@ -1,0 +1,68 @@
+<!DOCTYPE html> 
+
+<html>
+	<head>
+		<title>
+			{%block titulo%}
+				Alfie -Tienda en línea
+			{%endblock%}
+		</title>
+			{%block estilo%}
+				<link href="{{STATIC_URL}}css/estilo.css" type="text/css" rel="stylesheet">
+			{%endblock%}
+	</head>
+
+	<body>
+		<header>
+		{%block encabezado%}
+				<div id="logo">
+					<a href="/"><img src='{{STATIC_URL}}img/alfie.png' WIDHT=60 HEIGHT=80></a> 
+				</div>
+				<div id="buscar">
+					<form action="" method="get">
+						<input type="text" name="q" id='q' placeholder="Buscar nombre o categoría.">
+						<input type="submit" value="Buscar" id='btnBuscar'>
+					</form>
+				</div>
+
+				<a href="/login/">
+				<div id="sesion">
+						<label>Iniciar sesión</label>
+				</div>
+				</a>
+		{%endblock%}
+		</header>
+
+        <nav>
+            {% block navegacion %}
+                <p>hola</p>
+
+            {% endblock %}
+        </nav>
+
+		<aside>
+		 {%block aside%}
+		 	<ul class="menu">
+		 		<a href="/login/"><li class="menu_item">Mi perfil</li></a>
+		 		<a href=""><li class="menu_item">Carrito de compra</li></a>
+		 		<a href=""><li class="menu_item">Categoría</li></a>
+	 			<a href=""><li class="menu_item">Tallas</li></a>
+	 			<a href=""><li class="menu_item">Colores</li></a>
+	 			<hr>
+	 			<a href="/inventario/"><li class="menu_item">Administrador</li></a>
+		 	</ul>
+		 {%endblock%}
+		</aside>
+
+		<div id="contenido">
+		{%block contenido%}
+			<img id='under' src="{{STATIC_URL}}img/under.jpg">
+		{%endblock%}
+		</div>
+
+		<footer>
+		{%block pie%}
+		{%endblock%}
+		</footer>
+	</body>
+</html>

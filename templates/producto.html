@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+    <div id="prod">
+
+            {% if producto %}
+                <div id="div_img_sec">
+                <img src="{{ producto.foto_izquierda.url }}" class="img_sec" width=75 height=100>
+                <img src="{{ producto.foto_frente.url }}" class="img_sec" width=75 height=100>
+                <img src="{{ producto.foto_derecha.url }}" class="img_sec" width=75 height=100>
+                <img src="{{ producto.foto_suela.url }}" class="img_sec" width=75 height=100>
+                <img src="{{ producto.foto_trasera.url }}" class="img_sec" width=75 height=100>
+                </div>
+                <img src="{{ producto.foto_principal.url }}" id="img_prin" width=400 height=550>
+                <div id="info_prod">
+                    <h1>{{ producto.nombre }}</h1>
+                    <h3>SKU: {{ producto.SKU }}</h3>
+                    <h3>Modelo: {{ producto.modelo }}</h3>
+                    <p>{{ producto.descripcion }}</p>
+                    <ul id="list_tallas">Tallas: <br><br>
+                        {% for talla in producto.talla.all %}
+                            <li class="elemTalla">{{ talla }}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul id="list_colores">
+                        Colores:<br><br>
+                        {% for color in producto.color.all %}
+                            <li class="elemColor">{{ color }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div id="info_precio">
+                    <h2>${{ producto.precio_venta }}0</h2>
+                    <form action="" method="post">
+                        <input type="submit" name="btnComprar" value="Comprar" id="btnComprar">
+                    </form>
+                </div>
+            {% else %}
+
+            {% endif %}
+
+
+    </div>
+
+{% endblock %}
