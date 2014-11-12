@@ -12,7 +12,7 @@ class Usuario(models.Model):
 	apellido=models.CharField(max_length=30,verbose_name='Apellido')
 	contrasena=models.CharField(max_length=32)
 	fecha_nacimiento=models.CharField(max_length=30,verbose_name='Fecha de nacimiento')
-	sexo=models.CharField(max_length=1,null=True,blank=True, choices=SEXO) 
+	sexo=models.CharField(max_length=1,null=True,blank=True, choices=SEXO)
 	domicilio=models.CharField(max_length=60)
 	cp=models.CharField(max_length=8,verbose_name='Codigo Postal')
 	municipio=models.CharField(max_length=30,verbose_name='Ciudad')

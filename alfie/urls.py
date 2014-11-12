@@ -13,6 +13,7 @@ urlpatterns = patterns('alfie_store.views',url(r'^$','busqueda'), url(r'^busqued
 	url(r'^ver_inventario/$','ver_inventario'),
 	url(r'^add_existencias/$','add_existencias'),
     url(r'^producto/(\d{1,2})/$','producto'),
+    url(r'^carrito/$','carrito')
 
 	)
 

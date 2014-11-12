@@ -82,6 +82,9 @@ def producto(request,offset):
     producto=Producto.objects.get(id=offset);
     return render_to_response('producto.html',{'producto':producto},context_instance=RequestContext(request))
 
+def carrito(request):
+    return render_to_response('carrito.html',context_instance=RequestContext(request))
+
 
 
 def inventario(request):

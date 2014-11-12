@@ -293,7 +293,11 @@ div{
     border-width: 4px;
 }
 
-.elemTalla::selection, .elemColor:selection{
+.elemTalla:link, .elemColor:link{
+    background-color: blue;
+}
+
+.elemTalla:visited, .elemColor:visited{
     background-color: blue;
 }
 

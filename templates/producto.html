@@ -1,5 +1,31 @@
 {% extends 'base.html' %}
 
+{% block script %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/zepto.min.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+
+            function guardarTalla(){
+                var talla=$(this).html();
+                $('#').css({background:"#FF0000"});
+                alert(talla);
+
+            }
+            function guardarColor(){
+                var color=$(this).html();
+                $('#list_colores .elemColor').css({background:'none'});
+                $('#list_colores #'+color).css({background:'#FFFF00'});
+                alert(color);
+            }
+
+            $("#list_tallas .elemTalla").on('click',guardarTalla);
+            $("#list_colores .elemColor").on('click',guardarColor);
+        })
+    </script>
+    <noscript>No acepta JavaScript</noscript>
+{% endblock %}
+
 {% block contenido %}
     <div id="prod">
 
@@ -19,14 +45,14 @@
                     <form method="get" action="">
                         <ul id="list_tallas">Tallas: <br><br>
                             {% for talla in producto.talla.all %}
-                                <li class="elemTalla"><input type="checkbox" >{{ talla }}</li></li>
+                               <li class="elemTalla" id={{ talla }} >{{ talla }}</li>
                             {% endfor %}
                         </ul>
 
                         <ul id="list_colores">
                             Colores:<br><br>
                             {% for color in producto.color.all %}
-                                <li class="elemColor">{{ color }}</li>
+                                <li class="elemColor" id="{{ color }}">{{ color }}</li>
                             {% endfor %}
                         </ul>
                     </form>
