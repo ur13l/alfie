@@ -59,10 +59,12 @@ class Subcategoria(models.Model):
 	def __unicode__(self):
 		return self.nombre + " | " + self.categoria.nombre
 
+
 class Talla(models.Model):
 	talla=models.FloatField()
 	def __unicode__(self):
 		return str(self.talla)
+
 
 class Color(models.Model):
 	nombre=models.CharField(max_length=40)

@@ -1,12 +1,31 @@
 {%extends 'base.html'%}
 
+{% block script %}
+ <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.1.js"></script>
+
+    <script type="text/javascript">
+    $(function(){
+        function abrir(){
+            var id=$(this).attr('id');
+            $(this).resolveURL("/producto/"+id);
+
+        }
+
+        $('.marco').on('click',abrir)
+    });
+
+    </script>
+    <noscript>No acepta JavaScript</noscript>
+{% endblock %}
+
 {%block contenido%}
 	<h1>Resultado de la búsqueda</h1>
 	{%if prod%}
 	<p>{{prod|length}} producto{{prod|pluralize}} encontrado{{prod|pluralize}}. </p>
 	
 		{%for producto in prod%}
-		<div class="marco">
+        <a href="/producto/{{ producto.id }}">
+		<div class="marco" id="{{ producto.id }}">
 			<div class="resum_prod">
 				<div class="img_prod">
 					<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
@@ -16,6 +35,7 @@
 				</div>
 			</div>   
 		</div>
+            </a>
 		{%endfor%}
 {%else%}
 	<p>No {{prod}} matched your search criteria.</p>

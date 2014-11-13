@@ -78,7 +78,10 @@ def producto(request,offset):
     try:
         offset=int(offset)
     except ValueError:
-        raise Http404()
+		raise Http404()
+
+    if 'q' in request.GET:
+		return busqueda(request)
     producto=Producto.objects.get(id=offset);
     return render_to_response('producto.html',{'producto':producto},context_instance=RequestContext(request))
 
@@ -104,7 +107,7 @@ def add_existencias(request):
 		form = forms.ExistenciaForm(request.POST)
 		if form.is_valid():
 			productos=Producto.objects.filter(Q(SKU=exis)|Q(nombre__icontains=exis))
-			
+
 	elif request.method=='GET':
 		form=forms.ExistenciaForm()
 		try:
@@ -112,7 +115,7 @@ def add_existencias(request):
 				p=Producto.objects.get(SKU=elem)
 				p.cantidad+=int(request.GET[elem])
 				p.save()
-				
+
 		except ObjectDoesNotExist:
 			form=forms.ExistenciaForm()
 
@@ -120,5 +123,5 @@ def add_existencias(request):
 	else:
 		form = forms.ExistenciaForm()
 
-	
+
 	return render_to_response('add_existencias.html',{'form':form,'productos': productos},context_instance = RequestContext(request))
