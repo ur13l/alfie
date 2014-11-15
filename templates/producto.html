@@ -36,10 +36,7 @@
                     color:'white'});
             }
 
-            function mostrarImagen(){
 
-
-            }
 
             $("#list_tallas .elemTalla").on('click',guardarTalla);
             $("#list_colores .elemColor").on('click',guardarColor);
@@ -48,6 +45,7 @@
                 $('#img_prin').attr("src",img);
             }
             );
+             $("#btnCarrito").on('click',guardarCarrito);
         });
     </script>
     <noscript>No acepta JavaScript</noscript>
@@ -66,32 +64,44 @@
                 <img src="{{ producto.foto_trasera.url }}" id="tras" class="img_sec" width=75 height=100>
                 </div>
                 <img src="{{ producto.foto_principal.url }}" id="img_prin" width=400 height=550>
+                <form action="" method="post">
+                {% csrf_token %}
                 <div id="info_prod">
                     <h1>{{ producto.nombre }}</h1>
-                    <form method="post" action="">
+                    {% if errors %}
+                        <ul>
+                        {% for error in errors %}
+                           <li class="errorlist">{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
                         <ul id="list_tallas">Tallas: <br><br>
                             {% for talla in producto.talla.all %}
-                               <li class="elemTalla" id={{ talla }} >{{ talla }}</li>
+                                <li class="elemTalla"> <input type="radio" id="{{ talla }}" name="talla" value="{{ talla.id }}">{{ talla }}</li>
                             {% endfor %}
                         </ul>
 
                         <ul id="list_colores">
                             Colores:<br><br>
                             {% for color in producto.color.all %}
-                                <li class="elemColor" id="{{ color }}">{{ color }}</li>
+                                <li class="elemColor"> <input type="radio" id="{{ color }}" name="color" value="{{ color.id }}">{{ color }}</li>
                             {% endfor %}
                         </ul>
-                        <br>
+                        <ul id="list_cantidad">
+                            Cantidad:<br>
+                            <input type="number" name="cantidad" id="cantidad" min=1>
+                        </ul>
+
                     <h4>¿No encontraste tu talla?</h4>
-                    <br>
-                    <br>
+
                     <div id="info_precio">
-                    <label>${{ producto.precio_venta }}0</label>
-                        <input type="submit" name="btnCarrito" value="Añadir al carrito" id="btnCarrito">
+                    <label>${{ producto.precio_venta }}0</label><br>
+                      <input type="submit" value="Añadir al carrito" id="btnCarrito">
                     </div>
-                    </form>
+
                 </div>
                 </div>
+                </form>
                 <br>
                 <div id="lateral_prod">
 

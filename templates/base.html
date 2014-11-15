@@ -45,13 +45,28 @@
         </nav>
 
 		<aside>
-		 {%block aside%}
+            {%block aside%}
 		 	<ul class="menu">
-		 		<a href="/login/"><li class="menu_item">Mi perfil</li></a>
-		 		<a href=""><li class="menu_item">Carrito de compra</li></a>
-		 		<a href=""><li class="menu_item">Categoría</li></a>
-	 			<a href=""><li class="menu_item">Tallas</li></a>
-	 			<a href=""><li class="menu_item">Colores</li></a>
+		 		<li><a href="/login/">Mi perfil</a></li>
+		 		<li><a href="">Carrito de compra</a></li>
+		 		<li><span><a href="">Categoría</a></span>
+	 			<ul>
+                    {% for categoria in param.list_categoria %}
+	 				<li class="ultimo"><a href="">{{ categoria }}</a></li>
+                    {% endfor %}
+
+                    <li class="ultimo"><span><a href="">Talla</a></span></li>
+                        {% for talla in param.list_tallas %}
+                            <li class="ultimo">{{talla}}</li>
+                        {% endfor %}
+
+                    <li class="ultimo"><a href="">Color</a></li>
+                    {% for color in param.list_colores %}
+                    <li class="ultimo">{{ color }}</li>
+
+                    {% endfor %}
+	 			</ul>
+	 			</li>
 	 			<hr>
 	 			<a href="/inventario/"><li class="menu_item">Administrador</li></a>
 		 	</ul>

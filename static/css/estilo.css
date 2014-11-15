@@ -100,7 +100,7 @@ select{
 	border-radius:1em;
 	width:250px;
 	float:left;
-	margin:0 auto;
+    margin-top: 4em;
     cursor:pointer;
 }
 
@@ -132,6 +132,8 @@ select{
 }
 
 
+
+
 aside{
 	float:left;
 	padding-right:18px;
@@ -141,11 +143,55 @@ aside{
 	top:0;
 	border-radius:0 1em 1em 0;
 	left:0;
-	margin-left:-10px;;
-
+	margin-left:-10px;
 
 }
 
+aside ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+aside  ul li {
+	position:relative;
+}
+
+aside  ul li span{
+	display:block;
+}
+
+aside ul li a{
+	text-decoration:none;
+	color:#5b80b2;
+	display:block;
+	padding:8px;
+}
+
+aside ul li span:hover {
+	background:#003366;
+}
+
+aside ul li a:hover{
+background:#003366;
+}
+
+aside ul ul{
+	position:absolute;
+	display:none;
+}
+
+aside ul ul li a{
+	background:#f9f9f9;
+}
+
+aside ul li:hover ul{
+	width:80%;
+	position:absolute;
+	display:block;
+	left: 100px;
+	top:0;
+}
 .menu .menu_item{
 	text-decoration:none;
 	list-style:none;
@@ -159,7 +205,6 @@ aside{
 a{
 	text-decoration:none;
 }
-
 
 /*Login*/
 #form_login{
@@ -290,14 +335,21 @@ div{
 
 #list_tallas, #list_colores{
     font-size:16px ;
+    //height:150px;
+    overflow-x:hidden;
+    margin-top:0;
+    padding-top:0;
 }
+
 
 .elemTalla, .elemColor{
     font-size:16px;
     list-style: none;
-    display: inline;
     border-style: solid;
     padding:7px;
+    margin-bottom:10px;
+    position:relative;
+    display:inline-block;
     border-width: 0;
     border-radius: 9px;
     background:-moz-linear-gradient(#f8f8f8,#e8e8e8);
@@ -345,7 +397,11 @@ ul a:visited{
 }
 
 #lateral_prod{
-    background-color:red;
+   background: -webkit-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -o-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -moz-linear-gradient(#e2e2e2,#d2d2d2);
+	background: linear-gradient(#e2e2e2,#d2d2d2);
+
     width:100px;
     height:440px;
     float:left;
@@ -385,4 +441,14 @@ ul a:visited{
 img:hover{
     cursor:pointer;
 }
+
+#cantidad{
+    width:60px;
+    height:20px;
+
+}
+
+
+
+
 
