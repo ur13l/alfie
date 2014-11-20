@@ -2,33 +2,29 @@ from django.db import models
 from django.forms import ModelForm, PasswordInput
 from datetime import datetime
 from alfie.settings import MEDIA_URL
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
-class Usuario(models.Model):
+class Perfil(models.Model):
+    SEXO=(('H', str('Hombre')),('M',str('Mujer')))
+    user=models.OneToOneField(User)
+    fecha_nacimiento=models.CharField(max_length=30,verbose_name='Fecha de nacimiento',blank=True,null=True)
+    sexo=models.CharField(max_length=1,null=True,blank=True, choices=SEXO)
+    domicilio= models.CharField(max_length=60,null=True)
+    cp= models.CharField(max_length=8,verbose_name='Codigo Postal',null=True)
+    municipio=models.CharField(max_length=30,verbose_name='Ciudad',null=True)
+    estado= models.CharField(max_length=19,null=True)
+    telefono1= models.CharField(max_length=20,verbose_name='Telefono',blank=True,null=True)
+    telefono2= models.CharField(max_length=20,verbose_name='Telefono secundario',blank=True,null=True)
+    num_tarjeta= models.IntegerField(blank=True,null=True)
+    foto_perfil=models.ImageField(upload_to='media/')
 
-	SEXO=(('H', str('Hombre')),('M',str('Mujer')))
+def create_user_profile(sender,instance,created,**kwargs):
+    if created:
+        Perfil.objects.create(user=instance)
 
-	id_user=models.CharField(max_length=25,verbose_name='Nombre de usuario')
-	nombre=models.CharField(max_length=30)
-	apellido=models.CharField(max_length=30,verbose_name='Apellido')
-	contrasena=models.CharField(max_length=32)
-	fecha_nacimiento=models.CharField(max_length=30,verbose_name='Fecha de nacimiento')
-	sexo=models.CharField(max_length=1,null=True,blank=True, choices=SEXO)
-	domicilio=models.CharField(max_length=60)
-	cp=models.CharField(max_length=8,verbose_name='Codigo Postal')
-	municipio=models.CharField(max_length=30,verbose_name='Ciudad')
-	estado=models.CharField(max_length=19)
-	telefono1=models.CharField(max_length=20,verbose_name='Telefono',blank=True,null=True)
-	telefono2=models.CharField(max_length=20,verbose_name='Telefono secundario',blank=True,null=True)
-	num_tarjeta=models.IntegerField(blank=True,null=True)
-	email=models.EmailField(verbose_name='Correo electronico')
-	administrador=models.BooleanField(default=False);
+post_save.connect(create_user_profile,sender=User)
 
-
-	def __unicode__(self):
-		return self.nombre + ' ' + self.apellido
-
-	class Meta:
-		ordering=["id_user"]
 
 class Proveedor(models.Model):
 	nombre=models.CharField(max_length=50)
@@ -105,11 +101,11 @@ class DetalleProducto(models.Model):
 
 
 class Carrito(models.Model):
-	cliente=models.ForeignKey(Usuario)
+	cliente=models.ForeignKey(User)
 	cantidad_total=models.FloatField()
 
 class Venta(models.Model):
-	cliente=models.ForeignKey(Usuario)
+	cliente=models.ForeignKey(User)
 	cantidad_total=models.FloatField()
 
 

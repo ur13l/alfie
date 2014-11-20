@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+    <form action="/perfil/resumen/" id="formulario_modificar" method="post">
+    {% csrf_token %}
+    <div id="res_usuario">
+        <div id="res_izq">
+            <img src="{{ user.perfil.foto_perfil.url }}" id="foto_perfil" width=140 height=140>
+        </div>
+        <div id="res_info">
+
+            <h1>{{ user }}</h1>
+            <h2>Modificar perfil</h2>
+                <table>
+                {{ form_modificar.as_table }}
+                </table>
+                <input type="submit" value="Aceptar">
+            <hr>
+        </div>
+    </div>
+    </form>
+{% endblock %}

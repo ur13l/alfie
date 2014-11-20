@@ -26,7 +26,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_PROFILE_MODULE = 'alfie_store.Perfil'
 # Application definition
 
 INSTALLED_APPS = (

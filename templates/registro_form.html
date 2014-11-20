@@ -1,5 +1,18 @@
 {%extends 'base.html'%}
 
+{% block script %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="{{STATIC_URL}}js/jquery-1.11.1.js"></script>
+    <script src="{{STATIC_URL }}js/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#id_fecha_nacimiento').datepicker();
+        });
+
+
+    </script>
+{% endblock %}
+
 {%block contenido%}
 
 
@@ -16,7 +29,7 @@
 				
 				<h2> Crea tu cuenta de Alfie</h2>
 				<table>
-					{{form.as_table}}
+                    {{registro_form.as_table}}
 				</table>
 				<br>
 				<input type="submit" value="Registro" name= "registro" id="btnRegistro">

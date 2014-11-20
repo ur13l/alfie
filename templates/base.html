@@ -23,7 +23,7 @@
 					<a href="/"><img src='{{STATIC_URL}}img/alfie.png' WIDHT=60 HEIGHT=80></a> 
 				</div>
 				<div id="buscar">
-					<form action="" method="get">
+					<form action="/busqueda/" method="get">
 						<input type="text" name="q" id='q' placeholder="Buscar nombre o categoría.">
 						<input type="submit" value="Buscar" id='btnBuscar'>
 					</form>
@@ -31,7 +31,11 @@
 
 				<a href="/login/">
 				<div id="sesion">
-						<label>Iniciar sesión</label>
+                    {% if user.is_authenticated %}
+					    <label>{{ user.username }}</label>
+					{% else %}
+					    <label>Iniciar sesión</label>
+                    {% endif %}
 				</div>
 				</a>
 		{%endblock%}
@@ -45,10 +49,9 @@
         </nav>
 
 		<aside>
+            <ul class="menu">
             {%block aside%}
-		 	<ul class="menu">
 		 		<li><a href="/login/">Mi perfil</a></li>
-		 		<li><a href="">Carrito de compra</a></li>
 		 		<li><span><a href="">Categoría</a></span>
 	 			<ul>
                     {% for categoria in param.list_categoria %}
@@ -67,10 +70,21 @@
                     {% endfor %}
 	 			</ul>
 	 			</li>
-	 			<hr>
+                {% if user.is_authenticated %}
+	 			<li><a href="/perfil/resumen">Resumen</a></li>
+                <li><a href="/perfil/modificar">Modificar perfil</a></li>
+                 <li><a href="">Carrito de compra</a></li>
+                <li><a href="/logout/">Cerrar sesión</a></li>
+                {% endif %}
+                <hr>
+
+
+
+                {% if user.is_superuser %}
 	 			<a href="/inventario/"><li class="menu_item">Administrador</li></a>
-		 	</ul>
+                {% endif %}
 		 {%endblock%}
+            </ul>
 		</aside>
 
 		<div id="contenido">

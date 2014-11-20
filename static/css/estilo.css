@@ -6,7 +6,7 @@ header{
 	margin-left:0;
 	height:100px;
 	width:100%;
-	position:absolute;
+	position:fixed;
 
 		background: -webkit-linear-gradient(#f0f0f0,#e2e2e2);	
 	background: -o-linear-gradient(#f0f0f0,#e2e2e2);
@@ -41,6 +41,11 @@ body{
 }
 
 #formulario_registro input{
+	height:30px;
+	width:300px;
+}
+
+#formulario_modificar input{
 	height:30px;
 	width:300px;
 }
@@ -112,10 +117,12 @@ select{
 	float:left;
 	padding:10px;
 	width:10%;
+    position:fixed;
 }
 
 #buscar{
 	float:left;
+    position:fixed;
 	padding-top:30px;
 	padding-left:20em;
 	padding-right:8em;
@@ -129,9 +136,14 @@ select{
 #btnBuscar{
 	height:40px;
 	width:100px;
+    position:fixed;
 }
 
-
+#sesion{
+    position: fixed;
+    float:right;
+    right:0;
+}
 
 
 aside{
@@ -144,6 +156,8 @@ aside{
 	border-radius:0 1em 1em 0;
 	left:0;
 	margin-left:-10px;
+    margin-top:120px;
+    position:fixed;
 
 }
 
@@ -446,6 +460,33 @@ img:hover{
     width:60px;
     height:20px;
 
+}
+
+#res_usuario{
+    background: -webkit-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -o-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -moz-linear-gradient(#e2e2e2,#d2d2d2);
+	background: linear-gradient(#e2e2e2,#d2d2d2);
+    border-radius: 1em;
+    padding:1em;
+    float:left;
+    width:850px;
+    margin-top:0px;
+}
+
+#res_izq{
+    width:17%;
+    float:left;
+}
+
+#res_izq p, #res_izq img{
+    text-align: center;
+    align-content: center;
+}
+
+#res_info{
+    float:left;
+    padding-left:10px;
 }
 
 
