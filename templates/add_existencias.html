@@ -1,20 +1,27 @@
 {%extends 'inventario.html'%}
+
+
+
 {%block contenido%}
-						<form action="" method="post" id="form_agregar">
-							{%csrf_token%}
-							{{form.as_table}}
-						
-						<input type="Submit" id="button_buscar" value="Buscar">
-						</form>
+                        <div>
 						<form action="" method="get">
+						<input type="text" name="e" id='e' placeholder="Buscar por SKU o nombre.">
+						<input type="submit" value="Buscar" id='btnBuscar2'>
+					    </form>
+                        </div>
+
 						{%if productos %}
 							<ul>
-								{%for producto in productos%}
-									<div class="marco">
+								{%for producto in prod%}
+                                <form action="" method="post">
+                                {%csrf_token%}
+									<div class="marco" id="{{ producto.id }}">
 										<div class="resum_prod">
 											<div class="img_prod">
 												<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
-												<label><i>{{producto.nombre}}</i></label><br>
+												<label>SKU: {{ producto.SKU }}</label><br>
+                                                <input type="hidden" name="sel_producto" value="{{ producto.SKU }}">
+                                                <label><i>{{producto.nombre}}</i></label><br>
 												<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
 												<label>Talla:</label><select id="sel_talla" name="sel_talla">
 												{%for talla in producto.talla.all%}
@@ -26,20 +33,15 @@
 													<option value="{{color.id}}">{{color.nombre}}</option>
 												{%endfor%}
 												</select><br>
-												<label><strong>Unidades: 
-													{%for u in unid%}
-														{%if u.producto_id == producto.id%}
-															{{u.unidades}}
-														{%endif%}
-													{%endfor%}
-												</strong></label><br>
-												 <input type= "number" name="{{producto.SKU}}" size= 25 id='uni' value="0">	<input type="Submit"value="Agregar">
+                                                <input type="submit" name="agregar" value="Agregar">
 											</div>
 										</div>   
 									</div>
+
+                          		</form>
 									{%endfor%}
 							</ul>
 						
 						{%endif%}
-						</form>
+
 {%endblock%}

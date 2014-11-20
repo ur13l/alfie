@@ -134,32 +134,16 @@ def ver_inventario(request):
     lisproductos=Producto.objects.order_by('SKU')
     return render_to_response('ver_inventario.html',{'productos':lisproductos,'param':parametros()}, context_instance=RequestContext(request))
 
-def add_existencias(request):
-	errors = []
-	productos = []
-	if request.method == 'POST':
-		exis = request.POST['exis']
-		form = forms.ExistenciaForm(request.POST)
-		if form.is_valid():
-			productos=Producto.objects.filter(Q(SKU=exis)|Q(nombre__icontains=exis))
+#def add_existencias(request):
+    #if 'e' in request.GET:
+     #   e=request.GET['e']
+        prod=Producto.objects.filter(Q(nombre__icontains=e) | Q(SKU__icontains=e))
 
-	elif request.method=='GET':
-		form=forms.ExistenciaForm()
-		try:
-			for elem in request.GET.keys():
-				p=Producto.objects.get(SKU=elem)
-				p.cantidad+=int(request.GET[elem])
-				p.save()
+        #return render_to_response('add_existencias.html.html',{'prod':prod,'param':parametros()},context_instance=RequestContext(request))
 
-		except ObjectDoesNotExist:
-			form=forms.ExistenciaForm()
+    #else:
+		#return render_to_response("index.html",{'param':parametros()},context_instance=RequestContext(request))
 
-
-	else:
-		form = forms.ExistenciaForm()
-
-
-	return render_to_response('add_existencias.html',{'form':form,'productos': productos,'param':parametros()},context_instance = RequestContext(request))
 
 
 def perfil(request,offset):
