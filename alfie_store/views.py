@@ -1,11 +1,13 @@
 #-*-coding:utf-8 -*-
+from django.contrib.auth.decorators import login_required
 from systemd import login
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.utils.datastructures import MultiValueDictKeyError
-from alfie_store.models import Producto, DetalleProducto, Talla, Color, Categoria, Subcategoria, Perfil
+from alfie_store.models import Producto, DetalleProducto, Talla, Color, Categoria, Subcategoria, Perfil, Carrito, \
+    DetalleCarrito
 from alfie_store import forms
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.forms import UserCreationForm
@@ -71,51 +73,62 @@ def busqueda(request):
     else:
 		return render_to_response("index.html",{'param':parametros()},context_instance=RequestContext(request))
 
-
-
 def producto(request,offset):
-    errors=[]
-    try:
-        offset=int(offset)
-    except ValueError:
-	    return render_to_response('producto_no_encontrado.html',{'param':parametros()},context_instance=RequestContext(request))
+        errors=[]
+        try:
+            offset=int(offset)
+        except ValueError:
+            return render_to_response('producto_no_encontrado.html',{'param':parametros()},context_instance=RequestContext(request))
 
-    try:
-        producto=Producto.objects.get(id=offset);
-        color=""
-        talla=""
-        cantidad=""
+        try:
+            producto=Producto.objects.get(id=offset);
+            color=""
+            talla=""
+            cantidad=""
 
-        if request.method=='POST':
-            try:
-                talla=request.POST['talla']
-                color=request.POST['color']
-                cantidad=int(request.POST['cantidad'])
+            if request.method=='POST':
+                try:
+                    p=request.POST['producto']
+                    talla=request.POST['talla']
+                    color=request.POST['color']
+                    cantidad=int(request.POST['cantidad'])
 
 
-                if 'color' in request.POST and 'cantidad' in request.POST and 'talla' in request.POST:
-                    detalleProd=DetalleProducto.objects.get(Q(producto_id=producto.id) & Q( talla_id=talla) & Q(color_id=color))
-                    if cantidad>detalleProd.unidades:
-                        errors.append("Solo quedan %d unidades"%(detalleProd.unidades))
-                    else:
-                        return HttpResponse("HOLA MUNDO"+str(detalleProd.unidades+int(cantidad)))
-            except MultiValueDictKeyError:
-                if not color:
-                    errors.append("Debe especificar algún color")
-                if not talla:
-                    errors.append("Debe especificar una talla")
-            except ValueError:
-                errors.append("Debe especificar una cantidad")
-            except ObjectDoesNotExist:
-                errors.append("El producto se encuentra agotado")
+                    if 'color' in request.POST and 'cantidad' in request.POST and 'talla' in request.POST:
+                        detalleProd=DetalleProducto.objects.get(Q(producto_id=producto.id) & Q( talla_id=talla) & Q(color_id=color))
+                        if cantidad>detalleProd.unidades:
+                            errors.append("Solo quedan %d unidades"%(detalleProd.unidades))
+                        else:
 
-        return render_to_response('producto.html',{'producto':producto,'errors':errors,'param':parametros()},context_instance=RequestContext(request))
-    except:
-        return render_to_response('producto_no_encontrado.html',{'param':parametros()},context_instance=RequestContext(request))
+                            if request.user.is_anonymous():
+                                return HttpResponseRedirect('/login/')
+                            else:
+                                try:
+                                    car=Carrito.objects.get(cliente=request.user)
+                                    car.save()
 
-def carrito(request):
-    param=parametros()
-    return render_to_response('carrito.html',{'param':parametros()},context_instance=RequestContext(request))
+                                except ObjectDoesNotExist:
+                                    car=Carrito(cliente=request.user)
+                                    car.save()
+
+                                dc=DetalleCarrito(dproducto=detalleProd,carrito=car)
+                                dc.save()
+                                return HttpResponseRedirect('/perfil/carrito/')
+
+                except MultiValueDictKeyError:
+                    if not color:
+                        errors.append("Debe especificar algún color")
+                    if not talla:
+                        errors.append("Debe especificar una talla")
+               # except ValueError:
+                #    errors.append("Debe especificar una cantidad")
+                except ObjectDoesNotExist:
+                    errors.append("El producto se encuentra agotado")
+
+            return render_to_response('producto.html',{'producto':producto,'errors':errors,'param':parametros()},context_instance=RequestContext(request))
+        except ValueError:
+            return render_to_response('producto_no_encontrado.html',{'param':parametros()},context_instance=RequestContext(request))
+
 
 
 
@@ -134,15 +147,37 @@ def ver_inventario(request):
     lisproductos=Producto.objects.order_by('SKU')
     return render_to_response('ver_inventario.html',{'productos':lisproductos,'param':parametros()}, context_instance=RequestContext(request))
 
-#def add_existencias(request):
-    #if 'e' in request.GET:
-     #   e=request.GET['e']
+def add_existencias(request):
+    if request.method=='GET':
+        if 'e' in request.GET:
+            e=request.GET.get('e','')
+            prod=Producto.objects.filter(Q(nombre__icontains=e) | Q(SKU__icontains=e))
+            return render_to_response('add_existencias.html',{'prod':prod,'param':parametros()},context_instance=RequestContext(request))
+        return render_to_response('add_existencias.html',{'param':parametros()},context_instance=RequestContext(request))
+    elif request.method=='POST':
+        c=request.POST['sel_color']
+        t=request.POST['sel_talla']
+        p=request.POST['sel_producto']
+        e=request.GET['e']
         prod=Producto.objects.filter(Q(nombre__icontains=e) | Q(SKU__icontains=e))
-
-        #return render_to_response('add_existencias.html.html',{'prod':prod,'param':parametros()},context_instance=RequestContext(request))
-
-    #else:
-		#return render_to_response("index.html",{'param':parametros()},context_instance=RequestContext(request))
+        _color=Color.objects.get(id=c)
+        _talla=Talla.objects.get(id=t)
+        _producto=Producto.objects.get(id=p)
+        try:
+            dp=DetalleProducto.objects.get(producto=_producto,color=_color,talla=_talla)
+        except ObjectDoesNotExist:
+            dp=DetalleProducto(color=_color,talla=_talla,producto=_producto)
+            dp.unidades=0
+            dp.save()
+        if not 'unidades' in request.POST:
+            return render_to_response("add_existencias.html",{'prod':prod,'dp':dp},context_instance=RequestContext(request))
+        else:
+            unid=request.POST['unidades']
+            dp.unidades+=int(unid)
+            dp.save()
+            return render_to_response("add_existencias.html",{'prod':prod,'dp':dp},context_instance=RequestContext(request))
+    else:
+		return render_to_response("add_existencias.html",{'param':parametros()},context_instance=RequestContext(request))
 
 
 
@@ -151,6 +186,8 @@ def perfil(request,offset):
         return resumen(request)
     elif offset=="modificar":
         return modificar(request)
+    elif offset=="carrito":
+        return carrito(request)
     else:
         return Http404()
 
@@ -186,6 +223,15 @@ def modificar(request):
     else:
         form_modificar=forms.ModificarUsuarioForm(user)
         return render_to_response('modificar_perfil.html',{'form_modificar':form_modificar,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def carrito(request):
+
+    car=Carrito.objects.get(cliente=request.user.id)
+    dc=DetalleCarrito.objects.filter(carrito=car)
+
+    return render_to_response('carrito.html',{'carrito':car, 'dcar':dc, 'param':parametros()},context_instance=RequestContext(request))
+
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 def parametros():

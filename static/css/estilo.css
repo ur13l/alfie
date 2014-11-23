@@ -490,6 +490,43 @@ img:hover{
 }
 
 
+#unidades{
+    width: 50px;
 
+}
 
+#carrito{
+    padding:0;
+    margin:0;
+
+}
+
+.elemCarrito{
+    list-style: none;
+    padding:0;
+    margin:0;
+
+}
+
+.divElemCarrito{
+    background:black;
+    border-radius:1em;
+    padding:20px;
+    float:left;
+    width:600px;
+}
+
+.divElemCarrito img{
+    float:left;
+    border-radius: 1em;
+}
+
+.divElemCarrito p, .divElemCarrito label{
+    padding-left:10px;
+    float:left;
+}
+
+.divElemCarrito input{
+    width:60px;
+}
 

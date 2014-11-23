@@ -3,14 +3,14 @@
 
 
 {%block contenido%}
-                        <div>
+
 						<form action="" method="get">
+
 						<input type="text" name="e" id='e' placeholder="Buscar por SKU o nombre.">
 						<input type="submit" value="Buscar" id='btnBuscar2'>
-					    </form>
-                        </div>
+                        </form>
 
-						{%if productos %}
+						{%if prod %}
 							<ul>
 								{%for producto in prod%}
                                 <form action="" method="post">
@@ -20,7 +20,7 @@
 											<div class="img_prod">
 												<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
 												<label>SKU: {{ producto.SKU }}</label><br>
-                                                <input type="hidden" name="sel_producto" value="{{ producto.SKU }}">
+                                                <input type="hidden" name="sel_producto" value="{{ producto.id }}">
                                                 <label><i>{{producto.nombre}}</i></label><br>
 												<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
 												<label>Talla:</label><select id="sel_talla" name="sel_talla">
@@ -33,6 +33,13 @@
 													<option value="{{color.id}}">{{color.nombre}}</option>
 												{%endfor%}
 												</select><br>
+                                                {% if dp %}
+                                                    {% ifequal producto dp.producto %}
+                                                    <label>Unidades: {{ dp.unidades }}</label><br>
+                                                    <input type="number" min=1 placeholder="Unidades a aumentar" id="unidades" class='unid' name="unidades"><br>
+                                                    {% endifequal %}
+                                                {% endif %}
+
                                                 <input type="submit" name="agregar" value="Agregar">
 											</div>
 										</div>   
@@ -41,7 +48,7 @@
                           		</form>
 									{%endfor%}
 							</ul>
-						
+
 						{%endif%}
 
 {%endblock%}

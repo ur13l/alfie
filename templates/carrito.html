@@ -1,7 +1,35 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-    <script type="text/javascript">
-        alert("Mensaje de prueba");
-    </script>
+    <div id="carrito">
+        <div id="res_usuario">
+        <div id="res_izq">
+            <img src="{{ user.perfil.foto_perfil.url }}" id="foto_perfil" width=140 height=140>
+            <p>{{user.username}}</p>
+        </div>
+        <div id="res_info">
+
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <h2>Carrito de compras</h2>
+            <hr>
+            <ul id="carrito">
+                {% if dcar %}
+                    {% for elem in dcar %}
+                        <li class="elemCarrito">
+                        <div class="divElemCarrito">
+                            <img src="{{ elem.dproducto.producto.foto_principal.url }}" width=160 height=200>
+                            <h2>{{ elem.dproducto.producto }}</h2><br>
+                            <p>{{ elem.dproducto.talla }}</p><br>
+                            <p>Color:{{ elem.dproducto.color }}</p><br>
+                            <label>Cantidad:</label><Input type="number" min=1 name="cantidad" value={{ elem.cantidad }}><br>
+                        </div>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+
+
+        </div>
+    </div>
+    </div>
 {% endblock %}

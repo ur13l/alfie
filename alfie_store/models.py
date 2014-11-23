@@ -99,34 +99,26 @@ class DetalleProducto(models.Model):
 	unidades=models.IntegerField()
 
 
-
 class Carrito(models.Model):
-	cliente=models.ForeignKey(User)
-	cantidad_total=models.FloatField()
+    cliente=models.ForeignKey(User)
+
+    def __unicode__(self):
+        return 'Carrito de %s'%(self.cliente)
 
 class Venta(models.Model):
-	cliente=models.ForeignKey(User)
-	cantidad_total=models.FloatField()
-
-
+    usuario=models.ForeignKey(User)
+    cantidad_total=models.FloatField()
 
 class DetalleCarrito(models.Model):
-	producto=models.ForeignKey(Producto)
-	carrito=models.ForeignKey(Carrito)
-	cantidad=models.FloatField()
-	descuento=models.FloatField()
-
-
+    dproducto=models.ForeignKey(DetalleProducto)
+    carrito=models.ForeignKey(Carrito)
+    cantidad=models.IntegerField()
 
 class DetalleVenta(models.Model):
-	producto=models.ForeignKey(Producto)
-	carrito=models.ForeignKey(Venta)
-	cantidad=models.FloatField()
-	descuento=models.FloatField()
-
-
-
-
-
+    dproducto=models.ForeignKey(DetalleProducto)
+    venta=models.ForeignKey(Venta)
+    cantidad=models.IntegerField()
+    precio=models.FloatField()
+    descuento=models.FloatField()
 
 

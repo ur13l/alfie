@@ -1,5 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, PasswordInput
+from alfie_store.models import DetalleProducto
+
 
 class Cliente(models.Model):
 	id_cliente=models.CharField(max_length=25,verbose_name='Nombre de usuario')
@@ -56,17 +58,17 @@ class Producto(models.Model):
 
 
 class Carrito(models.Model):
-	cliente=models.ForeignKey(Cliente)
+	cliente=models.ForeignKey(User)
 	cantidad_total=models.FloatField()
 
 class Venta(models.Model):
-	cliente=models.ForeignKey(Cliente)
+	cliente=models.ForeignKey(Cte)
 	cantidad_total=models.FloatField()
 
 
 
 class DetalleCarrito(models.Model):
-	producto=models.ForeignKey(Producto)
+	dproducto=models.ForeignKey(DetalleProducto)
 	carrito=models.ForeignKey(Carrito)
 	cantidad=models.FloatField()
 	descuento=models.FloatField()
@@ -74,8 +76,8 @@ class DetalleCarrito(models.Model):
 
 
 class DetalleVenta(models.Model):
-	producto=models.ForeignKey(Producto)
-	carrito=models.ForeignKey(Venta)
+	dproducto=models.ForeignKey(DetalleProducto)    \
+    venta=models.ForeignKey(Venta)
 	cantidad=models.FloatField()
 	descuento=models.FloatField()
 
