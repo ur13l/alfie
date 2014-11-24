@@ -11,6 +11,7 @@ class Perfil(models.Model):
     fecha_nacimiento=models.CharField(max_length=30,verbose_name='Fecha de nacimiento',blank=True,null=True)
     sexo=models.CharField(max_length=1,null=True,blank=True, choices=SEXO)
     domicilio= models.CharField(max_length=60,null=True)
+    colonia= models.CharField(max_length=60,null=True)
     cp= models.CharField(max_length=8,verbose_name='Codigo Postal',null=True)
     municipio=models.CharField(max_length=30,verbose_name='Ciudad',null=True)
     estado= models.CharField(max_length=19,null=True)
@@ -113,6 +114,7 @@ class DetalleCarrito(models.Model):
     dproducto=models.ForeignKey(DetalleProducto)
     carrito=models.ForeignKey(Carrito)
     cantidad=models.IntegerField()
+    precio=models.FloatField()
 
 class DetalleVenta(models.Model):
     dproducto=models.ForeignKey(DetalleProducto)
@@ -121,4 +123,18 @@ class DetalleVenta(models.Model):
     precio=models.FloatField()
     descuento=models.FloatField()
 
+class DireccionEnvio(models.Model):
+    venta=models.ForeignKey(Venta,null=True,blank=True)
+    domicilio= models.CharField(max_length=60,null=True)
+    colonia= models.CharField(max_length=60,null=True)
+    cp= models.CharField(max_length=8,verbose_name='Codigo Postal',null=True)
+    municipio=models.CharField(max_length=30,verbose_name='Ciudad',null=True)
+    estado= models.CharField(max_length=19,null=True)
 
+class DireccionEnvioAdicional(models.Model):
+    dir_envio=models.ForeignKey(DireccionEnvio,null=True,blank=True)
+    domicilio2= models.CharField(max_length=60,null=True,blank=True,verbose_name='Domicilio')
+    colonia2= models.CharField(max_length=60,null=True,verbose_name='Colonia',blank=True,)
+    cp2= models.CharField(max_length=8,verbose_name='Codigo Postal',null=True,blank=True)
+    municipio2=models.CharField(max_length=30,verbose_name='Ciudad',null=True,blank=True)
+    estado2= models.CharField(max_length=19,null=True,verbose_name='Estado',blank=True)

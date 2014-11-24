@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-    <form action="/perfil/resumen/" id="formulario_modificar" method="post">
+    <form enctype="multipart/form-data" action="" id="formulario_modificar" method="post">
     {% csrf_token %}
     <div id="res_usuario">
         <div id="res_izq">
+            {% if user.perfil.foto_perfil %}
             <img src="{{ user.perfil.foto_perfil.url }}" id="foto_perfil" width=140 height=140>
+            {% else %}
+            <img src="{{STATIC_URL }}img/default.jpg" id="foto_perfil" width="140" height="140">
+            {% endif %}
         </div>
         <div id="res_info">
 

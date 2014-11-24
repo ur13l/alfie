@@ -19,6 +19,7 @@ body{
 	font-family:Calibri;
 	padding-left:0;
 	padding:0;
+    background-image:url('../img/background-.png');
 }
 
 .class{
@@ -146,7 +147,7 @@ select{
 }
 
 
-aside{
+.izquierda{
 	float:left;
 	padding-right:18px;
 	padding-left:15px;
@@ -470,8 +471,17 @@ img:hover{
     border-radius: 1em;
     padding:1em;
     float:left;
-    width:850px;
+    width:800px;
     margin-top:0px;
+}
+
+#res_carrito{
+    border-radius: 1em;
+    padding:1em;
+    float:left;
+    width:960px;
+    margin-top:0px;
+    margin-top:-30px;
 }
 
 #res_izq{
@@ -487,6 +497,13 @@ img:hover{
 #res_info{
     float:left;
     padding-left:10px;
+    width:480px;
+}
+
+#res_car{
+    float:left;
+    padding-left:10px;
+    width:920px;
 }
 
 
@@ -495,10 +512,18 @@ img:hover{
 
 }
 
-#carrito{
+#carrito_list{
     padding:0;
     margin:0;
+}
 
+#carrito{
+   width:920px;
+}
+
+#carrito_list{
+    padding:0;
+    margin-top:-7px;
 }
 
 .elemCarrito{
@@ -509,11 +534,25 @@ img:hover{
 }
 
 .divElemCarrito{
-    background:black;
-    border-radius:1em;
+    background:none;
     padding:20px;
     float:left;
-    width:600px;
+    width:920px;
+    background:white;
+
+}
+
+.divElemCarrito img, .divElemCarrito h2{
+    cursor: pointer;
+
+}
+
+.divElemCarrito:hover{
+        background: -webkit-linear-gradient(#fff,#f2f2f2);
+	background: -o-linear-gradient(#fff,#f2f2f2)
+	background: -moz-linear-gradient(#fff,#f2f2f2);
+	background: linear-gradient(#fff,#f2f2f2);
+    border-radius: 1em;
 }
 
 .divElemCarrito img{
@@ -521,12 +560,63 @@ img:hover{
     border-radius: 1em;
 }
 
-.divElemCarrito p, .divElemCarrito label{
-    padding-left:10px;
-    float:left;
+.divElemCarrito p,.divElemCarrito h2, .divElemCarrito label,.divElemCarrito h3{
+    padding:0;
+    margin:0;
+    margin-bottom: -20px;
+    margin-left:170px;
+
 }
 
 .divElemCarrito input{
     width:60px;
+    margin-bottom: -20px;
+    margin-left:80px;
+
 }
 
+#eliminarCarrito, #actualizarCarrito, #comprar{
+    width:200px;
+    height:40px;
+    float:right;
+    padding:0;
+    margin:0;
+}
+
+#tituloCarrito{
+    background: -webkit-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -o-linear-gradient(#e2e2e2,#d2d2d2);
+	background: -moz-linear-gradient(#e2e2e2,#d2d2d2);
+	background: linear-gradient(#e2e2e2,#d2d2d2);
+}
+
+#h1Carrito{
+    padding:30px;
+    padding-bottom: 0;
+}
+
+.derecha{
+    float:right;
+	padding-right:18px;
+	padding-left:15px;
+	margin-right:0px;
+	background-color:#f9f9f9;
+	top:0;
+	border-radius:0 1em 1em 0;
+	right:0;
+	margin-left:-10px;
+    margin-top:120px;
+    position:fixed;
+    width:250px;
+
+}
+
+
+#dir_envio{
+    width:700px;
+}
+#continuar{
+    float:right;
+    height:50px;
+    width:200px;
+}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+    <div id="dir_envio">
+
+        <form action="/registro/" method="get">
+    <h3>Dirección de envío</h3>
+    <p>Cambiar información si no corresponde a la dirección deseada </p>
+    <table>
+    {{ form.as_table }}
+    </table>
+
+<hr>
+    <h3>Dirección de envío adicional</h3>
+    <p>La información proporcionada aquí brinda mejores resultados en la entrega de sus productos. </p>
+    <table>
+    {{ form2.as_table }}
+    </table>
+    <br>
+    <input type="submit" id="continuar" value="Continuar" name="continuar">
+
+
+    </form>
+    </div>
+
+{% endblock %}

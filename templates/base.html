@@ -43,37 +43,51 @@
 
         <nav>
             {% block navegacion %}
-                <p>hola</p>
+                <p></p>
 
             {% endblock %}
         </nav>
 
-		<aside>
+		<aside class="izquierda">
             <ul class="menu">
             {%block aside%}
-		 		<li><a href="/login/">Mi perfil</a></li>
 		 		<li><span><a href="">Categoría</a></span>
 	 			<ul>
                     {% for categoria in param.list_categoria %}
 	 				<li class="ultimo"><a href="">{{ categoria }}</a></li>
                     {% endfor %}
-
-                    <li class="ultimo"><span><a href="">Talla</a></span></li>
+                </ul>
+                <li><span><a href="">Talla</a></span>
+                     <ul>
                         {% for talla in param.list_tallas %}
-                            <li class="ultimo">{{talla}}</li>
+                            <li class="ultimo"><span><a href="">{{talla}}</a></span></li>
                         {% endfor %}
-
-                    <li class="ultimo"><a href="">Color</a></li>
+                     </ul>
+              <li><span><a href="">Color</a></span>
+                    <ul>
                     {% for color in param.list_colores %}
-                    <li class="ultimo">{{ color }}</li>
+                    <li class="ultimo"><span><a href="">{{color}}</a></span></li>
 
                     {% endfor %}
 	 			</ul>
 	 			</li>
-                {% if user.is_authenticated %}
+		 {%endblock%}
+            </ul>
+		</aside>
+
+        <aside class="derecha">
+            <ul class="menu">
+            {% block derecha %}
+                 {% if user.is_authenticated %}
+                 {% if user.perfil.foto_perfil %}
+                 <img src="{{ user.perfil.foto_perfil.url }}" width=100 height=100>
+                  {% else %}
+                     <img src="{{STATIC_URL }}img/default.jpg" width=100 height=100>
+                     {% endif %}
+                     <h2>{{ user.first_name }} {{ user.last_name }}</h2><hr>
 	 			<li><a href="/perfil/resumen">Resumen</a></li>
-                <li><a href="/perfil/modificar">Modificar perfil</a></li>
-                 <li><a href="">Carrito de compra</a></li>
+                <li><a href="/perfil/modificar">Modificar información</a></li>
+                 <li><a href="/perfil/carrito">Carrito de compra</a></li>
                 <li><a href="/logout/">Cerrar sesión</a></li>
                 {% endif %}
                 <hr>
@@ -83,14 +97,15 @@
                 {% if user.is_superuser %}
 	 			<a href="/inventario/"><li class="menu_item">Administrador</li></a>
                 {% endif %}
-		 {%endblock%}
+            {% endblock %}
             </ul>
-		</aside>
+        </aside>
 
 		<div id="contenido">
 		{%block contenido%}
 			<img id='under' src="{{STATIC_URL}}img/under.jpg">
 		{%endblock%}
+        </ul>
 		</div>
 
 		<footer>

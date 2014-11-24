@@ -14,7 +14,9 @@ urlpatterns = patterns('alfie_store.views',url(r'^$','busqueda'), url(r'^busqued
 	url(r'^add_existencias/$','add_existencias'),
     url(r'^producto/(\d{1,8})/$','producto'),
     url(r'^perfil/(\w+)','perfil'),
-    url(r'^logout/$','cerrar_sesion')
+    url(r'^logout/$','cerrar_sesion'),
+    url(r'^envio/$','envio'),
+    url(r'^pago/$','pago'),
 
 	)
 

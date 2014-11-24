@@ -7,6 +7,7 @@ from alfie_store import models
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.admin.widgets import AdminDateWidget
 import datetime
+from alfie_store.models import DireccionEnvio, DireccionEnvioAdicional
 
 
 class RegistroForm(UserCreationForm):
@@ -17,6 +18,7 @@ class RegistroForm(UserCreationForm):
     fecha_nacimiento=forms.CharField(widget=forms.DateInput(attrs={'placeholder':'mm/dd/aaaa'}))
     sexo=forms.ChoiceField(choices=SEXO)
     domicilio= forms.CharField(max_length=60)
+    colonia= forms.CharField(max_length=60)
     cp= forms.CharField(max_length=8)
     municipio=forms.CharField(max_length=30)
     estado= forms.CharField(max_length=19)
@@ -25,7 +27,7 @@ class RegistroForm(UserCreationForm):
 
     class Meta:
         model=User
-        fields=['username', 'password1','password2','nombre','apellido', 'fecha_nacimiento','email',  'sexo','domicilio',
+        fields=['username', 'password1','password2','nombre','apellido', 'fecha_nacimiento','email',  'sexo','domicilio','colonia',
             'cp','municipio','estado','telefono1']
 
 
@@ -51,6 +53,7 @@ class RegistroForm(UserCreationForm):
         user.perfil.fecha_nacimiento=d.strftime('%Y-%m-%d')
         user.perfil.sexo=cd['sexo']
         user.perfil.domicilio=cd['domicilio']
+        user.perfil.colonia=cd['colonia']
         user.perfil.cp=cd['cp']
         user.perfil.municipio=cd['municipio']
         user.perfil.estado=cd['estado']
@@ -73,6 +76,7 @@ class ModificarUsuarioForm(forms.Form):
     apellido=forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class':'nombre'}))
     sexo=forms.ChoiceField(choices=SEXO)
     domicilio= forms.CharField(max_length=60)
+    colonia= forms.CharField(max_length=60)
     cp= forms.CharField(max_length=8,label="Código Postal")
     municipio=forms.CharField(max_length=30)
     estado= forms.CharField(max_length=19)
@@ -82,6 +86,17 @@ class ModificarUsuarioForm(forms.Form):
     class Meta:
         model = User
 
-        fields=['imagen','nombre','apellido', 'fecha_nacimiento','sexo','domicilio',
-                'cp','municipio','estado','telefono1']
+        fields=['imagen','nombre','apellido', 'fecha_nacimiento','sexo','domicilio', 'colonia',
+                'cp','municipio','estado','telefono1','telefono2']
 
+
+class DireccionEnvioForm(forms.ModelForm):
+    class Meta:
+        model=DireccionEnvio
+        fields=['domicilio','colonia','cp','municipio','estado']
+
+
+class DireccionEnvio2Form(forms.ModelForm):
+    class Meta:
+        model=DireccionEnvioAdicional
+        fields=['domicilio2','colonia2','cp2','municipio2','estado2']

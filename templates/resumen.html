@@ -3,7 +3,11 @@
 {% block contenido %}
     <div id="res_usuario">
         <div id="res_izq">
+            {% if user.perfil.foto_perfil %}
             <img src="{{ user.perfil.foto_perfil.url }}" id="foto_perfil" width=140 height=140>
+            {% else %}
+            <img src="{{STATIC_URL }}img/default.jpg" id="foto_perfil" width="140" height="140">
+            {% endif %}
             <p>{{user.username}}</p>
         </div>
         <div id="res_info">

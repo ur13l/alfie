@@ -1,11 +1,12 @@
 #-*-coding:utf-8 -*-
 from django.contrib.auth.decorators import login_required
-from systemd import login
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.templatetags.static import static
 from django.utils.datastructures import MultiValueDictKeyError
+from alfie.settings import MEDIA_ROOT
 from alfie_store.models import Producto, DetalleProducto, Talla, Color, Categoria, Subcategoria, Perfil, Carrito, \
     DetalleCarrito
 from alfie_store import forms
@@ -55,6 +56,9 @@ def registro(request):
         registro_form=forms.RegistroForm(request.POST)
         if registro_form.is_valid():
             registro_form.save()
+            r=User.objects.get(username=request.POST['username'])
+            r.perfil.foto_perfil=static('default.jpg')
+            r.save()
             acceso=authenticate(username=request.POST['username'],password=request.POST['password1'])
             login(request, acceso)
             return render_to_response('index.html',{'param':parametros()},context_instance=RequestContext(request))
@@ -110,9 +114,14 @@ def producto(request,offset):
                                 except ObjectDoesNotExist:
                                     car=Carrito(cliente=request.user)
                                     car.save()
-
-                                dc=DetalleCarrito(dproducto=detalleProd,carrito=car)
-                                dc.save()
+                                try:
+                                    dc=DetalleCarrito.objects.get(dproducto=detalleProd)
+                                    dc.cantidad+=cantidad
+                                    dc.precio=dc.dproducto.producto.precio_venta*dc.cantidad
+                                    dc.save()
+                                except ObjectDoesNotExist:
+                                    dc=DetalleCarrito(dproducto=detalleProd,carrito=car,cantidad=cantidad,precio=(detalleProd.producto.precio_venta*cantidad))
+                                    dc.save()
                                 return HttpResponseRedirect('/perfil/carrito/')
 
                 except MultiValueDictKeyError:
@@ -194,32 +203,35 @@ def perfil(request,offset):
 def resumen(request):
     return render_to_response('resumen.html',{'param':parametros()},context_instance=RequestContext(request))
 
+@login_required
 def modificar(request):
     u=request.user
     p=u.perfil
-    user={'us':u.username,'imagen':p.foto_perfil,'nombre':u.first_name,'apellido':u.last_name,'sexo':p.sexo,'domicilio':p.domicilio,'cp':p.cp,'municipio':p.municipio,'estado':p.estado,'telefono1':p.telefono1,'telefono2':p.telefono2}
+    user={'us':u.username,'imagen':p.foto_perfil,'nombre':u.first_name,'apellido':u.last_name,'sexo':p.sexo,'domicilio':p.domicilio,'colonia':p.colonia,'cp':p.cp,'municipio':p.municipio,'estado':p.estado,'telefono1':p.telefono1,'telefono2':p.telefono2}
 
     if request.method=='POST':
-        form_modificar=forms.ModificarUsuarioForm(request.POST,user)
+        form_modificar=forms.ModificarUsuarioForm(request.POST,request.FILES, user)
         if form_modificar.is_valid():
-            cd=form_modificar.cleaned_data
             us=User.objects.get(id=request.user.id)
             per=Perfil.objects.get(user=us)
-            us.first_name=cd['nombre']
-            us.last_name=cd['apellido']
-            per.sexo=cd['sexo']
-            per.domicilio=cd['domicilio']
-            per.cp=cd['cp']
-            per.municipio=cd['municipio']
-            per.estado=cd['estado']
-            per.telefono1=cd['telefono1']
-            per.telefono2=cd['telefono2']
-            per.foto_perfil=cd['imagen']
+            us.first_name=request.POST['nombre']
+            us.last_name=request.POST['apellido']
+            per.sexo=request.POST['sexo']
+            per.domicilio=request.POST['domicilio']
+            per.colonia=request.POST['colonia']
+            per.cp=request.POST['cp']
+            per.municipio=request.POST['municipio']
+            per.estado=request.POST['estado']
+            per.telefono1=request.POST['telefono1']
+            per.telefono2=request.POST['telefono2']
+
+            if 'imagen' in request.FILES:
+                per.foto_perfil=request.FILES['imagen']
+                save_file(request.FILES['imagen'])
             us.save()
             per.save()
-            return render_to_response('resumen.html',{'param':parametros()},context_instance=RequestContext(request))
-        else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect("/perfil/resumen", request)
+
     else:
         form_modificar=forms.ModificarUsuarioForm(user)
         return render_to_response('modificar_perfil.html',{'form_modificar':form_modificar,'param':parametros()},context_instance=RequestContext(request))
@@ -227,12 +239,62 @@ def modificar(request):
 @login_required
 def carrito(request):
 
-    car=Carrito.objects.get(cliente=request.user.id)
+    try:
+        car=Carrito.objects.get(cliente=request.user)
+        car.save()
+
+    except ObjectDoesNotExist:
+        car=Carrito(cliente=request.user)
+        car.save()
+
     dc=DetalleCarrito.objects.filter(carrito=car)
+    total=0
 
-    return render_to_response('carrito.html',{'carrito':car, 'dcar':dc, 'param':parametros()},context_instance=RequestContext(request))
+    for elem in dc:
+        total += elem.precio
 
+    if 'actualizarCarrito' in request.POST:
+
+        id_dcar=int(request.POST['id_dcar'])
+        dcar=DetalleCarrito.objects.get(id=id_dcar)
+        prec_un=dcar.dproducto.producto.precio_venta
+        cant=float(request.POST['cantidad'])
+        prec_total=prec_un*cant
+        dcar.precio=prec_total
+        dcar.cantidad=cant
+        dcar.save()
+        return HttpResponseRedirect("/perfil/carrito")
+
+    elif 'eliminarCarrito' in request.POST:
+        id_dcar=int(request.POST['id_dcar'])
+        dcar=DetalleCarrito.objects.get(id=id_dcar)
+        dcar.delete()
+        return HttpResponseRedirect("/perfil/carrito")
+
+    return render_to_response('carrito.html',{'carrito':car, 'dcar':dc, 'total':total, 'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def envio(request):
+    u=request.user
+    p=u.perfil
+    datos={'domicilio':p.domicilio,'colonia':p.colonia,'cp':p.cp,'municipio':p.municipio,'estado':p.estado}
+    form2=forms.DireccionEnvio2Form()
+    form=forms.DireccionEnvioForm(datos)
+
+    return render_to_response('envio.html',{'form':form,'form2':form2,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def pago(request):
+    return render_to_response('pago.html',context_instance=RequestContext(request))
 #----------------------------------------------------------------------------------------------------------------------------------------
+
+def save_file(file, path=""):
+    filename=file._get_name()
+    fd=open('%s%s'%(MEDIA_ROOT,str(path)+str(filename)),'wb')
+    for chunk in file.chunks():
+        fd.write(chunk)
+    fd.close()
+
 
 def parametros():
     list_tallas=Talla.objects.all()
