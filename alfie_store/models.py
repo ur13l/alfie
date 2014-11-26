@@ -58,9 +58,11 @@ class Subcategoria(models.Model):
 
 
 class Talla(models.Model):
-	talla=models.FloatField()
-	def __unicode__(self):
-		return str(self.talla)
+    talla=models.FloatField()
+    def __unicode__(self):
+        return str(self.talla)
+    class Meta:
+        ordering=["talla"]
 
 
 class Color(models.Model):
@@ -109,6 +111,7 @@ class Carrito(models.Model):
 class Venta(models.Model):
     usuario=models.ForeignKey(User)
     cantidad_total=models.FloatField()
+    entrega=models.BooleanField()
 
 class DetalleCarrito(models.Model):
     dproducto=models.ForeignKey(DetalleProducto)
@@ -121,7 +124,7 @@ class DetalleVenta(models.Model):
     venta=models.ForeignKey(Venta)
     cantidad=models.IntegerField()
     precio=models.FloatField()
-    descuento=models.FloatField()
+    descuento=models.FloatField(blank=True,null=True)
 
 class DireccionEnvio(models.Model):
     venta=models.ForeignKey(Venta,null=True,blank=True)

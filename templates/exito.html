@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block aside %}
+{% endblock %}
+
+{% block contenido %}
+    {% if not dc %}
+    <div id="success">
+        <h3>Éxito</h3>
+        <p>Su compra ha sido registrada con éxito. Para verificar el estado del pedido, verificar la sección de envíos. <a href="/">Regresar.</a></p>
+        <hr>
+    </div>
+    {% endif %}
+{% endblock %}

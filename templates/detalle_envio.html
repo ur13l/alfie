@@ -3,36 +3,43 @@
 {% endblock %}
 
 {% block contenido %}
-    <div id="carrito">
-        <div id="res_carrito">
-        <div id="tituloCarrito">
+    <div id="info_envio">
+        <h1>Detalles de envío</h1>
+        <h2>Información General</h2><hr>
+        <p><strong>Nombre del comprador:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Método de pago:</strong> Tarjeta de crédito.</p>
+        <h2>Domicilio de entrega</h2>
+        <hr>
+        <p><strong>Calle y número:</strong> {{ user.perfil.domicilio }}.</p>
+        <p><strong>Colonia:</strong> {{ user.perfil.colonia }}.</p>
+        <p><strong>Código Postal:</strong> {{ user.perfil.cp }}.</p>
+        <p><strong>Ciudad:</strong> {{ user.perfil.municipio }}.</p>
+        <p><strong>Estado:</strong> {{ user.perfil.estado }}.</p>
 
+        <h2>Lista de productos</h2><hr>
 
-            <h1 id="h1Carrito">Carrito de compras</h1>
-            <hr>
-            <ul id="carrito_list">
-                {% if dcar %}
-                    {% for elem in dcar %}
+        <ul id="carrito_list">
+                {% if dc %}
+                    {% for elem in dc %}
                         <li class="elemCarrito">
                         <div class="divElemCarrito">
-                            <form action="" method="post">
-                                {% csrf_token %}
+
                             <img src="{{ elem.dproducto.producto.foto_principal.url }}" width=160 height=200 href="/producto/{{ elem.dproducto.producto.id }}">
                             <h2><a href="/producto/{{ elem.dproducto.producto.id }}">{{ elem.dproducto.producto }}</a></h2><br>
                             <input type="hidden" name="id_dcar" value="{{ elem.id }}">
                             <p><i>{{ elem.dproducto.producto.descripcion }}</i></p><br>
                             <p>Talla: {{ elem.dproducto.talla }}</p><br>
-                            <p>Color:{{ elem.dproducto.color }}</p><br>
-                            <p>Cantidad:</p><Input type="number" min=1 name="cantidad" value={{ elem.cantidad }} max={{ elem.dproducto.unidades }} ><br>
-                            <h3>${{ elem.precio }}0</h3>
-                            <input type="submit" id="eliminarCarrito" name="eliminarCarrito" value="Eliminar">
-                             <input type="submit" id="actualizarCarrito" name="actualizarCarrito" value="Actualizar">
-                            </form>
+                            <p>Color: {{ elem.dproducto.color }}</p><br>
+                            <p>Cantidad: {{ elem.cantidad }}</p><br>
+                            <h3>Precio Unitario: ${{ elem.precio }}0</h3>
+                            <br>
+                            <hr>
                         </div>
                         </li>
                     {% endfor %}
+                    <hr>
                     <h2>Total: ${{ total }}0</h2>
-                    <form action="/envio/" method="post">
+                    <form action="" method="post">
                         {% csrf_token %}
                         <input type="submit" name="comprar" id="comprar" value="Confirmar">
                     </form>
@@ -40,9 +47,5 @@
                     <h2>No se encontraron productos en el carrito.</h2>
                 {% endif %}
             </ul>
-
-
-        </div>
-    </div>
     </div>
 {% endblock %}

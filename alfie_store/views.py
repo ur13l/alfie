@@ -8,7 +8,7 @@ from django.templatetags.static import static
 from django.utils.datastructures import MultiValueDictKeyError
 from alfie.settings import MEDIA_ROOT
 from alfie_store.models import Producto, DetalleProducto, Talla, Color, Categoria, Subcategoria, Perfil, Carrito, \
-    DetalleCarrito
+    DetalleCarrito, Venta, DetalleVenta
 from alfie_store import forms
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth.forms import UserCreationForm
@@ -19,7 +19,8 @@ from django.db.models import Q
 _usuario=AnonymousUser()
 
 def home(request):
-	return render_to_response('index.html',{'param':parametros()},RequestContext(request))
+    p=Producto.objects.all()
+    return render_to_response('index.html',{'prod':p,'param':parametros()},RequestContext(request))
 
 
 def iniciar_sesion(request):
@@ -147,8 +148,7 @@ def inventario(request):
 
 def cerrar_sesion(request):
     logout(request)
-    return render_to_response('index.html',{'param':parametros()},context_instance=RequestContext(request))
-
+    return HttpResponseRedirect("/")
 
 def ver_inventario(request):
     param=parametros()
@@ -285,7 +285,37 @@ def envio(request):
 
 @login_required
 def pago(request):
-    return render_to_response('pago.html',context_instance=RequestContext(request))
+
+
+    if request.method=="POST":
+        pago=forms.PagoForm(request.POST)
+        if pago.is_valid():
+            return HttpResponseRedirect("/confirmar/")
+    else:
+        pago=forms.PagoForm()
+    return render_to_response('pago.html',{'pago_form':pago,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def exito(request):
+    car=Carrito.objects.get(cliente=request.user)
+    dc=DetalleCarrito.objects.filter(carrito=car)
+    return render_to_response('exito.html',{'dc':dc,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def confirmar(request):
+    car=Carrito.objects.get(cliente=request.user)
+    dc=DetalleCarrito.objects.filter(carrito=car)
+    total=0
+    for elem in dc:
+        total += elem.precio
+    if request.method=="POST":
+        v=Venta(usuario=request.user,cantidad_total=0,entrega=False);
+        for elem in dc:
+            dv=DetalleVenta(dproducto=elem.dproducto,venta=v,cantidad=elem.cantidad,precio=elem.precio)
+            elem.delete()
+
+        return HttpResponseRedirect('/exito/')
+    return render_to_response('detalle_envio.html',{'dc':dc,'total':total,'param':parametros()},context_instance=RequestContext(request))
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 def save_file(file, path=""):

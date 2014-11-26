@@ -11,12 +11,29 @@
             {% block script %}
             {% endblock %}
 
+            <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.1.js"></script>
+
+            <script type="text/javascript">
+
+
+              $(function(){
+
+                  function mostrarTalla(){
+                      $("#talla_h, #talla_h_l").show();
+                      $("#ver_mas_talla").hide();
+                  }
+
+                $("#ver_mas_talla").on('click',mostrarTalla);
+              });
+              </script>
+
 			{%block estilo%}
 				<link href="{{STATIC_URL}}css/estilo.css" type="text/css" rel="stylesheet">
 			{%endblock%}
 	</head>
 
 	<body>
+    <div id="cuerpo">
 		<header>
 		{%block encabezado%}
 				<div id="logo">
@@ -29,15 +46,42 @@
 					</form>
 				</div>
 
-				<a href="/login/">
-				<div id="sesion">
-                    {% if user.is_authenticated %}
-					    <label>{{ user.username }}</label>
-					{% else %}
+			<a href="/perfil/resumen">
+            <a href="/login/">
+
+                <div id="sesion">
+                        {% if user.is_authenticated %}
+
+                     <ul id="menu_sesion">
+
+                     {% if user.is_authenticated %}
+                     {% if user.perfil.foto_perfil %}
+
+                         <li id="un_sesion"><img src="{{ user.perfil.foto_perfil.url }}" width=60 height=60>
+                      {% else %}
+                         <img src="{{STATIC_URL }}img/default.jpg" width=60 height=60>
+                         {% endif %}
+                         <strong style="font-size: 26px">&nbsp;{{ user.first_name }} &nbsp; &nbsp; &nbsp;&nbsp;</strong>
+                         <ul id="sub_sesion">
+                            <li class="opc_sesion" id="op1"><a href="/perfil/resumen">Resumen</a></li>
+                            <li class="opc_sesion" ><a href="/perfil/modificar">Modificar información</a></li>
+                            <li class="opc_sesion" ><a href="/perfil/modificar">Modificar información</a></li>
+                            <li class="opc_sesion" ><a href="/perfil/carrito">Carrito de compra</a></li>
+                            <li class="opc_sesion" id="op5"><a href="/logout/">Cerrar sesión</a></li>
+                        </ul>
+                     </li>
+                     {% endif %}
+
+
+                {% if user.is_superuser %}
+	 			<a href="/inventario/"><li class="opc_sesion" style="display:none">Administrador</li></a>
+                {% endif %}
+            </ul>
+                {% else %}
 					    <label>Iniciar sesión</label>
-                    {% endif %}
+                {% endif %}
 				</div>
-				</a>
+				</a></a>
 		{%endblock%}
 		</header>
 
@@ -48,69 +92,80 @@
             {% endblock %}
         </nav>
 
-		<aside class="izquierda">
-            <ul class="menu">
-            {%block aside%}
-		 		<li><span><a href="">Categoría</a></span>
-	 			<ul>
-                    {% for categoria in param.list_categoria %}
-	 				<li class="ultimo"><a href="">{{ categoria }}</a></li>
-                    {% endfor %}
-                </ul>
-                <li><span><a href="">Talla</a></span>
-                     <ul>
-                        {% for talla in param.list_tallas %}
-                            <li class="ultimo"><span><a href="">{{talla}}</a></span></li>
-                        {% endfor %}
-                     </ul>
-              <li><span><a href="">Color</a></span>
-                    <ul>
-                    {% for color in param.list_colores %}
-                    <li class="ultimo"><span><a href="">{{color}}</a></span></li>
 
-                    {% endfor %}
-	 			</ul>
-	 			</li>
-		 {%endblock%}
-            </ul>
-		</aside>
+                <form action="" class="validar_form" method="post">
+			<aside class="izquierda">
+	            <ul class="menu">
+	            {%block aside%}
+			 		<li><span><strong><a style="padding-bottom:0">Categoría</a></strong></span>
+		 			<hr><ul>
+	                    {% for categoria in param.list_categoria %}
+                            {% if forloop.counter < 6 %}
+		 				        <li class="ultimo"><span><a><input type="checkbox">{{categoria}}</a></span></li>
+                            {% elif forloop.counter == 6 %}
+                                <li class="ultimo" id="ver_mas_categoria"><a href="">Ver más</a></li>
+                            {% else %}
+                                <li class="ultimo"><a href="" style="display:none;">{{ categoria }}</a></li>
+                            {% endif %}
+	                    {% endfor %}
+	                </ul>
+	                <li><span><strong><a style="padding-bottom:0">Talla</a></strong></span>
+	                  <hr>   <ul>
+	                        {% for talla in param.list_tallas %}
+                                {% if forloop.counter < 6 %}
+		 				        <li class="ultimo"><span><a><input type="checkbox">{{talla}}</a></span></li>
+                                {% elif forloop.counter == 6 %}
+                                    <li class="ultimo" id="ver_mas_talla"><a id="a_ver_mas_talla">Ver más</a></li>
+                                {% else %}
+                                    <li class="ultimo"><span><a id="talla_h_l" style="display:none;"><input type="checkbox" id="talla_h" style="display:none;">{{talla}}</a></span></li>
+                                {% endif %}
 
-        <aside class="derecha">
-            <ul class="menu">
-            {% block derecha %}
-                 {% if user.is_authenticated %}
-                 {% if user.perfil.foto_perfil %}
-                 <img src="{{ user.perfil.foto_perfil.url }}" width=100 height=100>
-                  {% else %}
-                     <img src="{{STATIC_URL }}img/default.jpg" width=100 height=100>
-                     {% endif %}
-                     <h2>{{ user.first_name }} {{ user.last_name }}</h2><hr>
-	 			<li><a href="/perfil/resumen">Resumen</a></li>
-                <li><a href="/perfil/modificar">Modificar información</a></li>
-                 <li><a href="/perfil/carrito">Carrito de compra</a></li>
-                <li><a href="/logout/">Cerrar sesión</a></li>
-                {% endif %}
-                <hr>
+	                        {% endfor %}
+	                     </ul>
+	              <li><span><strong><a style="padding-bottom:0">Color</a></strong></span>
+                  <hr>
+	                    <ul>
+	                    {% for color in param.list_colores %}
+	                    {% if forloop.counter < 6 %}
+	                            <li class="ultimo"><span><a><input type="checkbox">{{color}}</a></span></li>
+                                {% elif forloop.counter == 6 %}
+                                    <li class="ultimo" id="ver_mas_color"><a id="a_ver_mas_color">Ver más</a></li>
+                                {% else %}
+                                    <li class="ultimo"><span><a id="color_h_l" style="display:none;"><input type="checkbox" id="color_h" style="display:none;">{{color}}</a></span></li>
+                                {% endif %}
 
 
+	                    {% endfor %}
+		 			</ul>
+		 			</li>
+			 {%endblock%}
+	            </ul>
+			</aside>
+		</form>
 
-                {% if user.is_superuser %}
-	 			<a href="/inventario/"><li class="menu_item">Administrador</li></a>
-                {% endif %}
-            {% endblock %}
-            </ul>
-        </aside>
+
 
 		<div id="contenido">
 		{%block contenido%}
-			<img id='under' src="{{STATIC_URL}}img/under.jpg">
+
 		{%endblock%}
         </ul>
 		</div>
-
 		<footer>
 		{%block pie%}
+
+
+<a href="">Acerca de nosotros></a>| <a href="">Contacto</a> | <a href="">Política de privacidad</a><br>
+            <p>Calzado Alfie S.A. de C.V., Hilario Medina #313 Col. La Carmona, León, Gto. México. Teléfono:(477) 765-35-32</p><a>Siguenos en:</a><br>
+
+            <div id="facebook"><a href="https://www.facebook.com"><img src='{{STATIC_URL}}img/facebook.jpg' WIDHT=28 HEIGHT=28></a> </div>
+            <div id="twitter"><a href="https://www.twitter.com"><img src='{{STATIC_URL}}img/Twitter.ico' WIDHT=30 HEIGHT=30></a> </div>
+            <div id="google"><a href="https://www.google.com"><img src='{{STATIC_URL}}img/google.jpg' WIDHT=30 HEIGHT=30></a> </div>
+
 		{%endblock%}
 		</footer>
+
 	</body>
+
+
 </html>

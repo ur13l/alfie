@@ -1,1 +1,28 @@
 {%extends 'base.html'%}
+
+
+{%block contenido%}
+
+    <img id='under' src="{{STATIC_URL}}img/portada.jpg">
+
+	{%if prod%}
+
+		{%for producto in prod%}
+        <a href="/producto/{{ producto.id }}">
+		<div class="marco" id="{{ producto.id }}">
+			<div class="resum_prod">
+				<div class="img_prod">
+					<img src="{{producto.foto_principal.url}}" WIDTH=208 HEIGHT=300>
+					<label><i>{{producto.nombre}}</i></label><br>
+					<label><strong>${{producto.precio_venta}}0 MXN</strong></label><br>
+
+				</div>
+			</div>
+		</div>
+            </a>
+		{%endfor%}
+{%else%}
+	<p>No existen productos.</p>
+{%endif%}
+
+{%endblock%}

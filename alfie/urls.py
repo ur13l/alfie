@@ -17,6 +17,8 @@ urlpatterns = patterns('alfie_store.views',url(r'^$','busqueda'), url(r'^busqued
     url(r'^logout/$','cerrar_sesion'),
     url(r'^envio/$','envio'),
     url(r'^pago/$','pago'),
+    url(r'^exito/$','exito'),
+    url(r'^confirmar/$','confirmar')
 
 	)
 

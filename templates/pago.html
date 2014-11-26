@@ -1,1 +1,74 @@
 {% extends 'base.html' %}
+{% block aside %}
+{% endblock %}
+
+
+{% block script %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.1.js"></script>
+
+    <script type="text/javascript">
+
+
+        $(function() {
+            $("label").hide();
+            $("#id_mes").hide();
+            $("#id_anio").hide();
+
+            function mostrar(){
+                $('#id_no_tarjeta').show();
+                $('#pago_aceptar').show();
+                $("label").show();
+                $("#id_mes").show();
+                $("#id_anio").show();
+                $("#id_nom").show();
+                $("#confirmar_pago").show();
+            }
+
+            $('.tarjeta').on('click',mostrar);
+            $('#visa, #mc').on('click',function(){
+                $("#id_codigo_tarj_ae").hide();
+                $("#id_codigo_tarj").show();
+            });
+
+            $('#visa').on('click',function(){
+                $("#img_visa").show();
+                $("#img_mc").hide();
+                $("#img_ae").hide();
+            })
+
+            $('#mc').on('click',function(){
+                $("#img_visa").hide();
+                $("#img_mc").show();
+                $("#img_ae").hide();
+            })
+
+            $('#ae').on('click',function(){
+                $("#id_codigo_tarj").hide();
+                $("#id_codigo_tarj_ae").show();
+
+                $("#img_visa").hide();
+                $("#img_mc").hide();
+                $("#img_ae").show();
+
+            })
+        });
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+    <div id="pago"><p>Pago con tarjeta de crédito</p>
+
+    <input type="radio" name="tarjeta" class="tarjeta" id="visa"> <img src="{{STATIC_URL }}img/visa.png" width="60" height="40">
+    <input type="radio" name="tarjeta" class="tarjeta" id="mc"> <img src="{{STATIC_URL }}img/mc.png" width="60" height="40">
+    <input type="radio" name="tarjeta" class="tarjeta" id="ae"> <img src="{{STATIC_URL }}img/ae.png" width="60" height="40">
+    {{ pago_form }}
+
+    <br>
+    <input type="submit" value="Aceptar" name="confirmar_pago" id="confirmar_pago">
+    </div>
+    </form>
+{% endblock %}
