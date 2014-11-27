@@ -6,7 +6,7 @@ from settings import MEDIA_ROOT
 admin.autodiscover();
 
 
-urlpatterns = patterns('alfie_store.views',url(r'^$','busqueda'), url(r'^busqueda/$','busqueda'),
+urlpatterns = patterns('alfie_store.views',url(r'^$','home'), url(r'^busqueda/$','busqueda'),
 	url(r'^login/$','iniciar_sesion'),
 	url(r'^registro/$','registro'),
 	url(r'^inventario/$','inventario'),

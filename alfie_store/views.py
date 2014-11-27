@@ -20,7 +20,7 @@ _usuario=AnonymousUser()
 
 def home(request):
     p=Producto.objects.all()
-    return render_to_response('index.html',{'prod':p,'param':parametros()},RequestContext(request))
+    return render_to_response('index.html',{'prod':p,'param':parametros()},context_instance=RequestContext(request))
 
 
 def iniciar_sesion(request):
@@ -43,7 +43,7 @@ def iniciar_sesion(request):
                     if acceso is not None:
                         if acceso.is_active:
                             login(request,acceso)
-                            return render_to_response('index.html',{'param':parametros()},context_instance=RequestContext(request))
+                            return HttpResponseRedirect("/")
                         else:
                             errors.append("El usuario no se encuentra activo")
                     else:
@@ -139,9 +139,6 @@ def producto(request,offset):
         except ValueError:
             return render_to_response('producto_no_encontrado.html',{'param':parametros()},context_instance=RequestContext(request))
 
-
-
-
 def inventario(request):
     mensaje="Hola entrando a inventario"
     return render_to_response('inventario.html',{'mensaje':mensaje,'param':parametros()}, context_instance=RequestContext(request))
@@ -188,8 +185,6 @@ def add_existencias(request):
     else:
 		return render_to_response("add_existencias.html",{'param':parametros()},context_instance=RequestContext(request))
 
-
-
 def perfil(request,offset):
     if offset=="resumen":
         return resumen(request)
@@ -197,11 +192,20 @@ def perfil(request,offset):
         return modificar(request)
     elif offset=="carrito":
         return carrito(request)
+    elif offset=="compras":
+        return compras(request)
+    elif offset=="pedidos":
+        return pedidos(request)
     else:
         return Http404()
 
 def resumen(request):
-    return render_to_response('resumen.html',{'param':parametros()},context_instance=RequestContext(request))
+    v=Venta.objects.filter(usuario=request.user)
+    dv=DetalleVenta.objects.filter(venta=v)
+    car=Carrito.objects.filter(cliente=request.user)
+    dc=DetalleCarrito.objects.filter(carrito=car)
+
+    return render_to_response('resumen.html',{'dv':dv,'dc':dc,'param':parametros()},context_instance=RequestContext(request))
 
 @login_required
 def modificar(request):
@@ -310,12 +314,32 @@ def confirmar(request):
         total += elem.precio
     if request.method=="POST":
         v=Venta(usuario=request.user,cantidad_total=0,entrega=False);
+        v.save()
         for elem in dc:
-            dv=DetalleVenta(dproducto=elem.dproducto,venta=v,cantidad=elem.cantidad,precio=elem.precio)
+            dv=DetalleVenta(dproducto=elem.dproducto,venta=v,cantidad=elem.cantidad,precio=elem.precio,descuento=0)
+            dv.save()
             elem.delete()
+            dv.dproducto.unidades-=dv.cantidad
+            dv.dproducto.save()
+
 
         return HttpResponseRedirect('/exito/')
     return render_to_response('detalle_envio.html',{'dc':dc,'total':total,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def compras(request):
+    v=Venta.objects.filter(Q(usuario=request.user))
+    dv=DetalleVenta.objects.filter(venta=v)
+
+    return render_to_response('compras.html',{'dv':dv,'param':parametros()},context_instance=RequestContext(request))
+
+@login_required
+def pedidos(request):
+    v=Venta.objects.filter(Q(usuario=request.user)&Q(entrega=False))
+    dv=DetalleVenta.objects.filter(venta=v)
+
+    return render_to_response('pedidos.html',{'dv':dv,'param':parametros()},context_instance=RequestContext(request))
+
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 def save_file(file, path=""):

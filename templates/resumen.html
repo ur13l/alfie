@@ -18,21 +18,71 @@
             <h2>Resumen de usuario</h2>
             <hr>
             <p><strong>Último inicio de sesión: {{ user.last_login }}</strong></p>
-            <h4>Últimas compras realizadas: </h4>
+            <div id="res_compras">
+            <h4>Historial de compras: </h4>
             <ul>
-                {% if compras %}
-                    {% for compra in compras %}
+                {% if dv %}
+                    {% for compra in dv %}
+                        {% if forloop.counter < 4 %}
+                        <a href="/producto/{{ compra.dproducto.producto.id }}">
+                        <div class="marco2" id="{{ compra.dproducto.producto.id }}">
+                            <div class="resum_prod">
+                                <div class="img_prod">
+                                    <img src="{{compra.dproducto.producto.foto_principal.url}}" WIDTH=104 HEIGHT=150>
+                                    <label><i>{{compra.dproducto.producto.nombre}}</i></label><br>
+                                     <label><i>Cantidad: {{compra.cantidad}}</i></label><br>
+                                     <label><i>Talla: {{ compra.dproducto.talla }}</i></label><br>
+                                     <label><i>Color: {{ compra.dproducto.color }}</i></label><br>
+                                    {% if compra.venta.entrega %}
+                                    <label><i>Entregado.</i></label><br>
+                                    {% else %}
+
+                                    <label><i>Envío en proceso.</i></label><br>
+                                    {% endif %}
+                                    <label><strong>${{compra.dproducto.producto.precio_venta}}0 MXN</strong></label><br>
+
+                                </div>
+                            </div>
+                        </div>
+                            </a>
+
+                        {% endif %}
+                        {% if forloop.counter == 3 %}
+                        <a href="/perfil/carrito">Ver más compras.</a>
+                        {% endif %}
                     {% endfor %}
+
                 {% endif %}
             </ul>
-
+            </div>
+            <br>
+            <div id="carrito_res">
             <h4>Productos en carrito de compras: </h4>
             <ul>
-                {% if carrito %}
-                    {% for producto in carrito %}
+                {% if dv %}
+                    {% for compra in dc %}
+                        <a href="/producto/{{ compra.dproducto.producto.id }}">
+                        <div class="marco2" id="{{ compra.dproducto.producto.id }}">
+                            <div class="resum_prod">
+                                <div class="img_prod">
+                                    <img src="{{compra.dproducto.producto.foto_principal.url}}" WIDTH=104 HEIGHT=150>
+                                    <label><i>{{compra.dproducto.producto.nombre}}</i></label><br>
+                                     <label><i>Cantidad: {{compra.cantidad}}</i></label><br>
+                                     <label><i>Talla: {{ compra.dproducto.talla }}</i></label><br>
+                                     <label><i>Color: {{ compra.dproducto.color }}</i></label><br>
+                                    <label><strong>${{compra.dproducto.producto.precio_venta}}0 MXN</strong></label><br>
+
+				</div>
+			</div>
+		</div>
+            </a>
+                        {% if forloop.counter == 3 %}
+                        <a href="/perfil/compras">Ver carrito.</a>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

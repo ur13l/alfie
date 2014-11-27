@@ -113,6 +113,9 @@ class Venta(models.Model):
     cantidad_total=models.FloatField()
     entrega=models.BooleanField()
 
+    class Meta:
+        ordering=['entrega']
+
 class DetalleCarrito(models.Model):
     dproducto=models.ForeignKey(DetalleProducto)
     carrito=models.ForeignKey(Carrito)
@@ -125,6 +128,8 @@ class DetalleVenta(models.Model):
     cantidad=models.IntegerField()
     precio=models.FloatField()
     descuento=models.FloatField(blank=True,null=True)
+    class Meta:
+        ordering=['venta']
 
 class DireccionEnvio(models.Model):
     venta=models.ForeignKey(Venta,null=True,blank=True)

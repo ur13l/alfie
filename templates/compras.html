@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+    {% if dv %}
+        {% for elem in dv %}
+            {% if not elem.venta.entrega %}
+                <li class="elemCarrito">
+                <div class="divElemCarrito" id="no-entregado">
+            {% else %}
+
+                <li class="elemCarrito" >
+                <div class="divElemCarrito">
+            {% endif %}
+
+
+                <img src="{{ elem.dproducto.producto.foto_principal.url }}" width=160 height=200 href="/producto/{{ elem.dproducto.producto.id }}">
+                <h2><a href="/producto/{{ elem.dproducto.producto.id }}">{{ elem.dproducto.producto }}</a></h2><br>
+                <input type="hidden" name="id_dcar" value="{{ elem.id }}">
+                <p><i>{{ elem.dproducto.producto.descripcion }}</i></p><br>
+                <p>Talla: {{ elem.dproducto.talla }}</p><br>
+                <p>Color:{{ elem.dproducto.color }}</p><br>
+                <p>Cantidad: {{ elem.cantidad }} </p><br><br>
+                <h3>${{ elem.precio }}0</h3>
+            {% if not elem.venta.entrega %}
+                <img src="{{ STATIC_URL }}img/icon-paqueteria.png" width="70" height="55" style="float:right"><h4 style="float:right">Producto en proceso de envío</h4>
+            {% endif %}
+
+            </div>
+            </li>
+        {% endfor %}
+        {% else %}
+            <h2>No se ha adquirido ningún producto.</h2>
+    {% endif %}
+{% endblock %}

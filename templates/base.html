@@ -8,12 +8,11 @@
 			{%endblock%}
 		</title>
 
-            {% block script %}
-            {% endblock %}
 
             <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.1.js"></script>
 
             <script type="text/javascript">
+
 
 
               $(function(){
@@ -26,6 +25,10 @@
                 $("#ver_mas_talla").on('click',mostrarTalla);
               });
               </script>
+
+
+            {% block script %}
+            {% endblock %}
 
 			{%block estilo%}
 				<link href="{{STATIC_URL}}css/estilo.css" type="text/css" rel="stylesheet">
@@ -59,23 +62,25 @@
 
                          <li id="un_sesion"><img src="{{ user.perfil.foto_perfil.url }}" width=60 height=60>
                       {% else %}
-                         <img src="{{STATIC_URL }}img/default.jpg" width=60 height=60>
+                         <li id="un_sesion"><img src="{{STATIC_URL }}img/default.jpg" width=60 height=60>
                          {% endif %}
                          <strong style="font-size: 26px">&nbsp;{{ user.first_name }} &nbsp; &nbsp; &nbsp;&nbsp;</strong>
                          <ul id="sub_sesion">
-                            <li class="opc_sesion" id="op1"><a href="/perfil/resumen">Resumen</a></li>
-                            <li class="opc_sesion" ><a href="/perfil/modificar">Modificar información</a></li>
-                            <li class="opc_sesion" ><a href="/perfil/modificar">Modificar información</a></li>
-                            <li class="opc_sesion" ><a href="/perfil/carrito">Carrito de compra</a></li>
-                            <li class="opc_sesion" id="op5"><a href="/logout/">Cerrar sesión</a></li>
+                            <a href="/perfil/resumen"><li class="opc_sesion" id="op1">Resumen</li></a>
+                            <a href="/perfil/modificar"><li class="opc_sesion" >Modificar información</li></a>
+                            <a href="/perfil/compras"><li class="opc_sesion" >Historial de compras</li></a>
+                            <a href="/perfil/carrito"><li class="opc_sesion" >Carrito de compra</li></a>
+                            {% if user.is_superuser %}
+                            <a href="/inventario/"><li class="opc_sesion" >Administrador</li></a>
+                            {% endif %}
+                             <a href="/logout/"><li class="opc_sesion" id="op5">Cerrar sesión</li></a>
+
                         </ul>
                      </li>
                      {% endif %}
 
 
-                {% if user.is_superuser %}
-	 			<a href="/inventario/"><li class="opc_sesion" style="display:none">Administrador</li></a>
-                {% endif %}
+
             </ul>
                 {% else %}
 					    <label>Iniciar sesión</label>
@@ -97,11 +102,13 @@
 			<aside class="izquierda">
 	            <ul class="menu">
 	            {%block aside%}
+                    <form action="" method="get">
+                    {% csrf_token %}
 			 		<li><span><strong><a style="padding-bottom:0">Categoría</a></strong></span>
 		 			<hr><ul>
 	                    {% for categoria in param.list_categoria %}
                             {% if forloop.counter < 6 %}
-		 				        <li class="ultimo"><span><a><input type="checkbox">{{categoria}}</a></span></li>
+		 				        <li class="ultimo"><span><a><input type="checkbox" name="chk_cat" value="{{ categoria }}" onclick="this.form.submit();">{{categoria}}</a></span></li>
                             {% elif forloop.counter == 6 %}
                                 <li class="ultimo" id="ver_mas_categoria"><a href="">Ver más</a></li>
                             {% else %}
@@ -113,11 +120,11 @@
 	                  <hr>   <ul>
 	                        {% for talla in param.list_tallas %}
                                 {% if forloop.counter < 6 %}
-		 				        <li class="ultimo"><span><a><input type="checkbox">{{talla}}</a></span></li>
+		 				        <li class="ultimo"><span><a><input type="checkbox" name="chk_tal" value="{{ talla }}" onclick="this.form.submit();">{{talla}}</a></span></li>
                                 {% elif forloop.counter == 6 %}
                                     <li class="ultimo" id="ver_mas_talla"><a id="a_ver_mas_talla">Ver más</a></li>
                                 {% else %}
-                                    <li class="ultimo"><span><a id="talla_h_l" style="display:none;"><input type="checkbox" id="talla_h" style="display:none;">{{talla}}</a></span></li>
+                                    <li class="ultimo"><span><a id="talla_h_l" style="display:none;"><input type="checkbox" onclick="this.form.submit();" id="talla_h" style="display:none;"  name="chk_tal" value="{{ talla }}">{{talla}}</a></span></li>
                                 {% endif %}
 
 	                        {% endfor %}
@@ -127,17 +134,18 @@
 	                    <ul>
 	                    {% for color in param.list_colores %}
 	                    {% if forloop.counter < 6 %}
-	                            <li class="ultimo"><span><a><input type="checkbox">{{color}}</a></span></li>
+	                            <li class="ultimo"><span><a><input type="checkbox" name="chk_col" value="{{ color }}" onclick="this.form.submit();">{{color}}</a></span></li>
                                 {% elif forloop.counter == 6 %}
                                     <li class="ultimo" id="ver_mas_color"><a id="a_ver_mas_color">Ver más</a></li>
                                 {% else %}
-                                    <li class="ultimo"><span><a id="color_h_l" style="display:none;"><input type="checkbox" id="color_h" style="display:none;">{{color}}</a></span></li>
+                                    <li class="ultimo"><span><a id="color_h_l" style="display:none;"><input type="checkbox"  name="chk_col" onclick="this.form.submit();" value="{{ color }}" id="color_h" style="display:none;">{{color}}</a></span></li>
                                 {% endif %}
 
 
 	                    {% endfor %}
 		 			</ul>
 		 			</li>
+              </form>
 			 {%endblock%}
 	            </ul>
 			</aside>
@@ -150,6 +158,7 @@
 
 		{%endblock%}
         </ul>
+        <br><br><br><br><br>
 		</div>
 		<footer>
 		{%block pie%}

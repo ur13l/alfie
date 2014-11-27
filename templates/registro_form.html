@@ -3,9 +3,8 @@
 {% endblock %}
 
 {% block script %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <script src="{{STATIC_URL}}js/jquery-1.11.1.js"></script>
-    <script src="{{STATIC_URL }}js/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#id_fecha_nacimiento').datepicker();
